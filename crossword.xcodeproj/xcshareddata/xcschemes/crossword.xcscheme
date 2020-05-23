@@ -48,6 +48,16 @@
                ReferencedContainer = "container:crossword.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "ADF875942478C9F700F8FCBE"
+               BuildableName = "crosswordTest1.xctest"
+               BlueprintName = "crosswordTest1"
+               ReferencedContainer = "container:crossword.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

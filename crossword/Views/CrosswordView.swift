@@ -26,30 +26,3 @@ struct CrosswordView: View {
         }
     }
 }
-
-struct CrosswordView_Previews: PreviewProvider {
-    
-    static func parse() {
-        let urlString = "https://github.com/doshea/nyt_crosswords/blob/master/1976/03/03.json"
-        guard let url = URL(string: urlString) else {
-            return
-        }
-        guard let json = try? Data(contentsOf: url) else {
-            return
-        }
-        if let xword = try? JSONDecoder().decode(CrosswordDataJSON.self, from: json) {
-            DispatchQueue.main.async {
-                return xword
-            }
-        }
-        
-        
-        
-        
-    }
-    static var previews: some View {
-        CrosswordView(crosswordData: parse() as! CrosswordData)
-        
-        
-    }
-}

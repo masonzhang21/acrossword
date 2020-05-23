@@ -20,6 +20,8 @@ target 'crossword' do
   pod 'Firebase/Auth'	
   pod 'Firebase/Firestore'	
   pod 'Validator'
+  pod 'SwiftyJSON', '~> 4.0'
+
 
 
   # other: https://firebase.google.com/docs/ios/setup#available-pods

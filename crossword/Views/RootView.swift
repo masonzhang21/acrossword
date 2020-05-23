@@ -18,7 +18,7 @@ struct RootView: View {
             if (appData.user == nil) {
             LoginView(vm: LoginVM())
         } else {
-                HomeView(vm: HomeVM())
+            appData.currentView
         }
         }.onAppear(perform: {self.vm.setAuthStateChangeListener(appData: self.appData)}))
     }

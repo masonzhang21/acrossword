@@ -24,6 +24,12 @@ struct HomeView: View {
             if (appData.user != nil) {
             Text(appData.user!.uid)
             }
+            Button(action: {self.appData.changeView(view: CrosswordView(scheme: self.vm.parse()))}) {
+                Text("Play!").padding()
+                .frame(minWidth: 0, maxWidth: .infinity)
+                .foregroundColor(Color(UIColor.white))
+                .cornerRadius(10)
+            }
         }
     }
 }

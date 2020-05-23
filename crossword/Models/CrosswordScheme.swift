@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import SwiftyJSON
 //if we add other crossword formats, make a struct that takes as input a CrosswordDataJSON but conforms to CrosswordData protocol
 
 struct Answers: Decodable {
@@ -19,6 +19,26 @@ struct Size: Decodable {
     var rows: Int
 }
 struct CrosswordDataJSON: Decodable {
+    var acrossmap: String?
+    var admin: String?
+    var autowrap: String?
+    var bbars: String?
+    var circles: String?
+    var code: String?
+    var downmap: String?
+    var hold: String?
+    var id: String?
+    var id2: String?
+    var interpretcolors: String?
+    var jnotes: String?
+    var key: String?
+    var mini: String?
+    var notepad: String?
+    var rbars: String?
+    var shadecircles: String?
+    var track: String?
+    var type: String?
+    
     var answers: Answers
     var author: String
     var clues: Answers
@@ -33,10 +53,16 @@ struct CrosswordDataJSON: Decodable {
     var title: String
 }
 
+struct Clue {
+    var clue: String
+    var answer: String
+    var firstTile: TileLoc
+}
+
 struct CrosswordScheme {
     
-    var clues: [[String: String]]
-    
+    var acrossClues: [Int: Clue]
+    var downClues: [Int: Clue]
     var author: String
     var editor: String
     var publisher: String
@@ -58,6 +84,11 @@ struct CrosswordScheme {
         guard let json = try? Data(contentsOf: url) else {
             return nil
         }
+        do {
+            let a = try JSONDecoder().decode(CrosswordDataJSON.self, from: json)
+        } catch {
+            print(error)
+        }
         guard let xword = try? JSONDecoder().decode(CrosswordDataJSON.self, from: json) else {
             return nil
         }
@@ -75,22 +106,24 @@ struct CrosswordScheme {
         
         var grid: [[String?]] = []
         var gridnums: [[Int?]] = []
+        var gridnumLocs: [Int: TileLoc] = [:]
         for i in 0..<numRows {
             var gridRow: [String?] = []
             var gridnumsRow: [Int?] = []
             for j in 0..<numCols {
                 let index = i * numCols + j
                 let answer: String = xword.grid[index]
-                let number: Int = xword.gridnums[index]
                 if answer == "."{
                     gridRow.append(nil)
                 } else {
                     gridRow.append(answer)
                 }
+                let number: Int = xword.gridnums[index]
                 if number == 0 {
                     gridnumsRow.append(nil)
                 } else {
                 gridnumsRow.append(number)
+                    gridnumLocs[number] = TileLoc(row: i, col: j)
                 }
             }
             grid.append(gridRow)
@@ -99,15 +132,23 @@ struct CrosswordScheme {
         self.grid = grid
         self.gridnums = gridnums
 
-        
-        var acrossClues: [String: String] = [:]
-        var downClues: [String: String] = [:]
+        func clueNumber(of clue: String) -> Int {
+            //clue format should be: [ClueNumber]. [Clue String] ex: 1. Capital of Italy
+            return Int(clue.components(separatedBy: " ").first!.replacingOccurrences(of: ".", with: ""))!
+        }
+        var acrossClues: [Int: Clue] = [:]
+        var downClues: [Int: Clue] = [:]
         for i in 0..<xword.clues.across.count {
-            acrossClues[xword.clues.across[i]] = xword.answers.across[i]
+            let clueNum: Int = clueNumber(of: xword.clues.across[i])
+            let clue: Clue = Clue(clue: xword.clues.across[i], answer: xword.answers.across[i], firstTile: gridnumLocs[clueNum]!)
+            acrossClues[clueNum] = clue
         }
         for i in 0..<xword.clues.down.count {
-            downClues[xword.clues.down[i]] = xword.answers.down[i]
+            let clueNum: Int = clueNumber(of: xword.clues.down[i])
+            let clue: Clue = Clue(clue: xword.clues.down[i], answer: xword.answers.down[i], firstTile: gridnumLocs[clueNum]!)
+            downClues[clueNum] = clue
         }
-        self.clues = [acrossClues, downClues]
+        self.acrossClues = acrossClues
+        self.downClues = downClues
     }
 }

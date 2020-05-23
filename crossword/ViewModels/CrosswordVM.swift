@@ -51,15 +51,15 @@ class CrosswordVM: ObservableObject {
             let row = lookupTile.row
             var firstTileInWord: TileLoc = TileLoc(row: row, col: 0)
             for i in lookupTile.col...0 {
-                let curTile = scheme.grid[row][i]
-                if curTile == nil {
+                let ithTile = scheme.grid[row][i]
+                if ithTile == nil {
                     firstTileInWord = TileLoc(row: row, col: i + 1)
                     break
                 }
             }
             for i in firstTileInWord.col..<scheme.numCols {
-                let curTile = scheme.grid[row][i]
-                if curTile == nil {
+                let ithTile = scheme.grid[row][i]
+                if ithTile == nil {
                     break
                 } else {
                     tiles.append(TileLoc(row: row, col: i))
@@ -69,15 +69,15 @@ class CrosswordVM: ObservableObject {
             let col = lookupTile.col
             var firstTileInWord: TileLoc = TileLoc(row: 0, col: col)
             for i in lookupTile.row...0 {
-                let curTile = scheme.grid[i][col]
-                if curTile == nil {
+                let ithTile = scheme.grid[i][col]
+                if ithTile == nil {
                     firstTileInWord = TileLoc(row: i + 1, col: col)
                     break
                 }
             }
             for i in firstTileInWord.row..<scheme.numCols {
-                let curTile = scheme.grid[i][col]
-                if curTile == nil {
+                let ithTile = scheme.grid[i][col]
+                if ithTile == nil {
                     break
                 } else {
                     tiles.append(TileLoc(row: i, col: col))
@@ -127,17 +127,70 @@ class CrosswordVM: ObservableObject {
      Changes focus to the first empty tile in the next word with an empty tile
      */
     func focusNextWord() {
-        true
+        
+        func searchAcrossClues(from start: Int) -> Bool{
+            let acrossClueNums: [Int] = Array(scheme.acrossClues.keys).sorted(by: <)
+            let startIndex = acrossClueNums.firstIndex(of: start)!
+            let slice = acrossClueNums[startIndex..<acrossClueNums.count]
+            for cluenum in slice {
+                let clue: Clue = scheme.acrossClues[cluenum]!
+                let clueTiles = tilesInSameWord(as: clue.firstTile, dir: .across)
+                for tile in clueTiles {
+                    if state.inputGrid[tile.row][tile.col]! == "" {
+                        state.focusedTile = tile
+                        state.currentWord = clueTiles
+                        return true
+                    }
+                }
+            }
+            return false
+        }
+        func searchDownClues(from start: Int) -> Bool {
+            let downClueNums: [Int] = Array(scheme.downClues.keys).sorted(by: <)
+            let startIndex = downClueNums.firstIndex(of: start)!
+            let slice = downClueNums[startIndex..<downClueNums.count]
+            for cluenum in slice {
+                let clue: Clue = scheme.downClues[cluenum]!
+                let clueTiles = tilesInSameWord(as: clue.firstTile, dir: .down)
+                for tile in clueTiles {
+                    if state.inputGrid[tile.row][tile.col]! == "" {
+                        state.focusedTile = tile
+                        state.currentWord = clueTiles
+                        return true
+                    }
+                }
+            }
+            return false
+        }
+        
+        guard let currentWord: [TileLoc] = state.currentWord else {
+            return
+        }
+        let currentClueNum: Int = scheme.gridnums[currentWord[0].row][currentWord[0].col]!
+        switch state.direction {
+        case .across:
+            if !searchAcrossClues(from: currentClueNum) {
+                //none of the across clues after the current clue had an empty space, so we need to wrap around the board and change direction to down
+                state.direction = .down
+                searchDownClues(from: 0)
+            }
+        case .down:
+            if !searchAcrossClues(from: currentClueNum) {
+                //none of the down clues after the current clue had an empty space, so we need to wrap around the board and change direction to across
+                state.direction = .across
+                searchAcrossClues(from: 0)
+            }
+        }
     }
     
     /**
      Changes focus to the next tile
      */
-    func focusNext(wasEmpty: Bool) {
+    func focusNext(wasEmpty skipFilledTiles: Bool) {
         let fCol = state.focusedTile!.col
         let fRow = state.focusedTile!.row
         
-        switch (state.direction, wasEmpty) {
+        switch (state.direction, skipFilledTiles) {
         case (.across, true):
             colLoop: for i in fCol..<scheme.numCols {
                 switch state.inputGrid[fRow][i] {
@@ -178,55 +231,7 @@ class CrosswordVM: ObservableObject {
             }
             
         }
-        /*
-         let fRow = state.focusedTile!.row
-         let fCol = state.focusedTile!.col
-         
-         if wasEmpty {
-         switch state.direction {
-         case .across:
-         colLoop: for i in fCol..<scheme.numCols {
-         switch state.inputGrid[fRow][i] {
-         case "":
-         state.focusedTile = TileLoc(row: fRow, col: i)
-         break colLoop
-         case nil:
-         self.focusNextWord()
-         break colLoop
-         default:
-         continue
-         }
-         }
-         case .down:
-         colLoop: for i in fRow..<scheme.numRows {
-         switch state.inputGrid[i][fCol] {
-         case "":
-         state.focusedTile = TileLoc(row: i, col: fCol)
-         break colLoop
-         case nil:
-         self.focusNextWord()
-         break colLoop
-         default:
-         continue
-         }
-         }
-         }
-         } else {
-         switch state.direction {
-         case .across:
-         if fCol < scheme.numCols && scheme.grid[fRow][fCol + 1] != nil {
-         state.focusedTile = TileLoc(row: fRow, col: fCol + 1)
-         } else {
-         self.focusNextWord()
-         }
-         case .down:
-         if fRow < scheme.numRows && scheme.grid[fRow + 1][fCol] != nil {
-         state.focusedTile = TileLoc(row: fRow + 1, col: fCol)
-         } else {
-         self.focusNextWord()
-         }
-         }
-         */
+        
     }
     
     /**
@@ -254,9 +259,4 @@ class CrosswordVM: ObservableObject {
     func focus(loc: TileLoc) {
         state.focusedTile = loc
     }
-    
-    
-    
-    
-    
 }
