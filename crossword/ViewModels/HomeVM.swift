@@ -23,7 +23,12 @@ class HomeVM: ObservableObject {
     
     //TO-DO: Rename method, don't force crash if initialization fails (instead do nothing or display error message)
     func parse() -> CrosswordScheme {
-        return CrosswordScheme(jsonUrl: "https://github.com/doshea/nyt_crosswords/blob/master/1976/03/03.json")!
+        do {
+            let c = try CrosswordScheme(id: "https://github.com/doshea/nyt_crosswords/blob/master/1976/03/03.json")!
+            return c
+        } catch {
+           fatalError()
+        }
     }
 }
 

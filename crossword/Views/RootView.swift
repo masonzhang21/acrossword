@@ -14,7 +14,7 @@ struct RootView: View {
     @EnvironmentObject var appData: AppData
     
     var body: some View {
-        Color.blue.overlay(Group{
+        Color.blue.overlay(Group {
             if (appData.user == nil) {
             LoginView(vm: LoginVM())
         } else {

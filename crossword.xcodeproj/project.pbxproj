@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		260315488B4A2C7443BF34C6 /* Pods_crosswordTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6900BD622EC74BEFFC633BB5 /* Pods_crosswordTests.framework */; };
 		50400ED1096DF13C490CDFF8 /* Pods_crossword_crosswordUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5404D41A9AA5765D9CD3AA /* Pods_crossword_crosswordUITests.framework */; };
+		AD12E63B247A5225008C6A18 /* 1976 in Resources */ = {isa = PBXBuildFile; fileRef = AD12E63A247A5225008C6A18 /* 1976 */; };
+		AD12E63C247A5225008C6A18 /* 1976 in Resources */ = {isa = PBXBuildFile; fileRef = AD12E63A247A5225008C6A18 /* 1976 */; };
 		AD17F051244D367500CA04FC /* FirebaseAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD17F050244D367500CA04FC /* FirebaseAuth.swift */; };
 		AD17F053244D379F00CA04FC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD17F052244D379F00CA04FC /* User.swift */; };
 		AD17F055244D425B00CA04FC /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD17F054244D425B00CA04FC /* LoginView.swift */; };
@@ -31,7 +33,7 @@
 		AD6F96C52446604D007F14F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD6F96C42446604D007F14F9 /* Assets.xcassets */; };
 		AD6F96C82446604D007F14F9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD6F96C72446604D007F14F9 /* Preview Assets.xcassets */; };
 		AD6F96CB2446604D007F14F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD6F96C92446604D007F14F9 /* LaunchScreen.storyboard */; };
-		AD6F96D62446604D007F14F9 /* crosswordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD6F96D52446604D007F14F9 /* crosswordTests.swift */; };
+		AD6F96D62446604D007F14F9 /* crosswordSchemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD6F96D52446604D007F14F9 /* crosswordSchemeTests.swift */; };
 		AD6F96E12446604D007F14F9 /* crosswordUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD6F96E02446604D007F14F9 /* crosswordUITests.swift */; };
 		ADCA2418245EB71D000531E4 /* CrosswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCA2417245EB71D000531E4 /* CrosswordView.swift */; };
 		ADCA241A245EB73E000531E4 /* CrosswordVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCA2419245EB73E000531E4 /* CrosswordVM.swift */; };
@@ -42,8 +44,8 @@
 		ADF6DFE8244CC5E800A3B5E3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ADF6DFE7244CC5E800A3B5E3 /* GoogleService-Info.plist */; };
 		ADF6DFE9244CC5E800A3B5E3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ADF6DFE7244CC5E800A3B5E3 /* GoogleService-Info.plist */; };
 		ADF6DFEA244CC5E800A3B5E3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ADF6DFE7244CC5E800A3B5E3 /* GoogleService-Info.plist */; };
-		ADF875982478C9F700F8FCBE /* crosswordTest1.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF875972478C9F700F8FCBE /* crosswordTest1.swift */; };
-		ADF875A02478CA2E00F8FCBE /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF8759F2478CA2E00F8FCBE /* test.swift */; };
+		ADF875A02478CA2E00F8FCBE /* singlePlayerLogicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF8759F2478CA2E00F8FCBE /* singlePlayerLogicTests.swift */; };
+		ADF875A32478E02D00F8FCBE /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = ADF875A12478E02D00F8FCBE /* Model.xcdatamodeld */; };
 		BFAA63DFA56A58FCC7EFDC49 /* Pods_crossword.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C2B22A84A8BF047CE0D559D /* Pods_crossword.framework */; };
 /* End PBXBuildFile section */
 
@@ -62,13 +64,6 @@
 			remoteGlobalIDString = AD6F96BA2446604C007F14F9;
 			remoteInfo = crossword;
 		};
-		ADF8759A2478C9F700F8FCBE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AD6F96B32446604C007F14F9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = AD6F96BA2446604C007F14F9;
-			remoteInfo = crossword;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +75,7 @@
 		6900BD622EC74BEFFC633BB5 /* Pods_crosswordTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_crosswordTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		741CBFD7044D6E1F194736AA /* Pods-crossword-crosswordUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crossword-crosswordUITests.release.xcconfig"; path = "Target Support Files/Pods-crossword-crosswordUITests/Pods-crossword-crosswordUITests.release.xcconfig"; sourceTree = "<group>"; };
 		7F5404D41A9AA5765D9CD3AA /* Pods_crossword_crosswordUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_crossword_crosswordUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD12E63A247A5225008C6A18 /* 1976 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = 1976; path = resources/nyt/1976; sourceTree = "<group>"; };
 		AD17F050244D367500CA04FC /* FirebaseAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuth.swift; sourceTree = "<group>"; };
 		AD17F052244D379F00CA04FC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		AD17F054244D425B00CA04FC /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -105,7 +101,7 @@
 		AD6F96CA2446604D007F14F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AD6F96CC2446604D007F14F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AD6F96D12446604D007F14F9 /* crosswordTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = crosswordTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AD6F96D52446604D007F14F9 /* crosswordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = crosswordTests.swift; sourceTree = "<group>"; };
+		AD6F96D52446604D007F14F9 /* crosswordSchemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = crosswordSchemeTests.swift; sourceTree = "<group>"; };
 		AD6F96D72446604D007F14F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AD6F96DC2446604D007F14F9 /* crosswordUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = crosswordUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD6F96E02446604D007F14F9 /* crosswordUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = crosswordUITests.swift; sourceTree = "<group>"; };
@@ -117,10 +113,8 @@
 		ADDD13A6246F4F1C003BC8E9 /* CrosswordTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordTile.swift; sourceTree = "<group>"; };
 		ADDD13A82470EB6C003BC8E9 /* TileLoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileLoc.swift; sourceTree = "<group>"; };
 		ADF6DFE7244CC5E800A3B5E3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		ADF875952478C9F700F8FCBE /* crosswordTest1.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = crosswordTest1.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		ADF875972478C9F700F8FCBE /* crosswordTest1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = crosswordTest1.swift; sourceTree = "<group>"; };
-		ADF875992478C9F700F8FCBE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		ADF8759F2478CA2E00F8FCBE /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
+		ADF8759F2478CA2E00F8FCBE /* singlePlayerLogicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = singlePlayerLogicTests.swift; sourceTree = "<group>"; };
+		ADF875A22478E02D00F8FCBE /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		F385B66D3DE45F519CCBE722 /* Pods-crossword-crosswordUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crossword-crosswordUITests.debug.xcconfig"; path = "Target Support Files/Pods-crossword-crosswordUITests/Pods-crossword-crosswordUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -146,13 +140,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				50400ED1096DF13C490CDFF8 /* Pods_crossword_crosswordUITests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		ADF875922478C9F700F8FCBE /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,8 +179,6 @@
 				AD17F0602456513600CA04FC /* ActivityIndicator.swift */,
 				AD17F0622456A59100CA04FC /* ResetPasswordView.swift */,
 				AD17F0642456AAA400CA04FC /* SignUpView.swift */,
-				ADCA2417245EB71D000531E4 /* CrosswordView.swift */,
-				ADDD13A6246F4F1C003BC8E9 /* CrosswordTile.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -202,9 +187,6 @@
 			isa = PBXGroup;
 			children = (
 				AD17F052244D379F00CA04FC /* User.swift */,
-				ADCA241B245EB74D000531E4 /* CrosswordState.swift */,
-				ADCA2421245FF64D000531E4 /* CrosswordScheme.swift */,
-				ADDD13A82470EB6C003BC8E9 /* TileLoc.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -219,7 +201,6 @@
 				AD17F0702457F7C600CA04FC /* ResetPasswordVM.swift */,
 				AD17F0722457F7CF00CA04FC /* RootVM.swift */,
 				AD17F0742457F7EA00CA04FC /* SignUpVM.swift */,
-				ADCA2419245EB73E000531E4 /* CrosswordVM.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -233,13 +214,27 @@
 			path = Utility;
 			sourceTree = "<group>";
 		};
+		AD577232247CB31D00973301 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				ADCA2419245EB73E000531E4 /* CrosswordVM.swift */,
+				ADCA241B245EB74D000531E4 /* CrosswordState.swift */,
+				ADCA2421245FF64D000531E4 /* CrosswordScheme.swift */,
+				ADDD13A82470EB6C003BC8E9 /* TileLoc.swift */,
+				ADCA2417245EB71D000531E4 /* CrosswordView.swift */,
+				ADDD13A6246F4F1C003BC8E9 /* CrosswordTile.swift */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
 		AD6F96B22446604C007F14F9 = {
 			isa = PBXGroup;
 			children = (
+				AD12E63A247A5225008C6A18 /* 1976 */,
+				ADF875A12478E02D00F8FCBE /* Model.xcdatamodeld */,
 				AD6F96BD2446604C007F14F9 /* crossword */,
 				AD6F96D42446604D007F14F9 /* crosswordTests */,
 				AD6F96DF2446604D007F14F9 /* crosswordUITests */,
-				ADF875962478C9F700F8FCBE /* crosswordTest1 */,
 				AD6F96BC2446604C007F14F9 /* Products */,
 				1EE99528529C0842D3AB26F7 /* Pods */,
 				357FADFEA91A4646C8064A0D /* Frameworks */,
@@ -252,7 +247,6 @@
 				AD6F96BB2446604C007F14F9 /* crossword.app */,
 				AD6F96D12446604D007F14F9 /* crosswordTests.xctest */,
 				AD6F96DC2446604D007F14F9 /* crosswordUITests.xctest */,
-				ADF875952478C9F700F8FCBE /* crosswordTest1.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -260,6 +254,7 @@
 		AD6F96BD2446604C007F14F9 /* crossword */ = {
 			isa = PBXGroup;
 			children = (
+				AD577232247CB31D00973301 /* Game */,
 				AD17F05D24528E1E00CA04FC /* Utility */,
 				AD17F05C24528DF300CA04FC /* ViewModels */,
 				AD17F05B24528DED00CA04FC /* Models */,
@@ -286,8 +281,8 @@
 		AD6F96D42446604D007F14F9 /* crosswordTests */ = {
 			isa = PBXGroup;
 			children = (
-				ADF8759F2478CA2E00F8FCBE /* test.swift */,
-				AD6F96D52446604D007F14F9 /* crosswordTests.swift */,
+				ADF8759F2478CA2E00F8FCBE /* singlePlayerLogicTests.swift */,
+				AD6F96D52446604D007F14F9 /* crosswordSchemeTests.swift */,
 				AD6F96D72446604D007F14F9 /* Info.plist */,
 			);
 			path = crosswordTests;
@@ -300,15 +295,6 @@
 				AD6F96E22446604D007F14F9 /* Info.plist */,
 			);
 			path = crosswordUITests;
-			sourceTree = "<group>";
-		};
-		ADF875962478C9F700F8FCBE /* crosswordTest1 */ = {
-			isa = PBXGroup;
-			children = (
-				ADF875972478C9F700F8FCBE /* crosswordTest1.swift */,
-				ADF875992478C9F700F8FCBE /* Info.plist */,
-			);
-			path = crosswordTest1;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -372,24 +358,6 @@
 			productReference = AD6F96DC2446604D007F14F9 /* crosswordUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		ADF875942478C9F700F8FCBE /* crosswordTest1 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = ADF8759E2478C9F700F8FCBE /* Build configuration list for PBXNativeTarget "crosswordTest1" */;
-			buildPhases = (
-				ADF875912478C9F700F8FCBE /* Sources */,
-				ADF875922478C9F700F8FCBE /* Frameworks */,
-				ADF875932478C9F700F8FCBE /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				ADF8759B2478C9F700F8FCBE /* PBXTargetDependency */,
-			);
-			name = crosswordTest1;
-			productName = crosswordTest1;
-			productReference = ADF875952478C9F700F8FCBE /* crosswordTest1.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -411,10 +379,6 @@
 						CreatedOnToolsVersion = 11.4;
 						TestTargetID = AD6F96BA2446604C007F14F9;
 					};
-					ADF875942478C9F700F8FCBE = {
-						CreatedOnToolsVersion = 11.5;
-						TestTargetID = AD6F96BA2446604C007F14F9;
-					};
 				};
 			};
 			buildConfigurationList = AD6F96B62446604C007F14F9 /* Build configuration list for PBXProject "crossword" */;
@@ -433,7 +397,6 @@
 				AD6F96BA2446604C007F14F9 /* crossword */,
 				AD6F96D02446604D007F14F9 /* crosswordTests */,
 				AD6F96DB2446604D007F14F9 /* crosswordUITests */,
-				ADF875942478C9F700F8FCBE /* crosswordTest1 */,
 			);
 		};
 /* End PBXProject section */
@@ -446,6 +409,7 @@
 				AD6F96CB2446604D007F14F9 /* LaunchScreen.storyboard in Resources */,
 				ADF6DFE8244CC5E800A3B5E3 /* GoogleService-Info.plist in Resources */,
 				AD6F96C82446604D007F14F9 /* Preview Assets.xcassets in Resources */,
+				AD12E63B247A5225008C6A18 /* 1976 in Resources */,
 				AD6F96C52446604D007F14F9 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,6 +419,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ADF6DFE9244CC5E800A3B5E3 /* GoogleService-Info.plist in Resources */,
+				AD12E63C247A5225008C6A18 /* 1976 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,13 +428,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				ADF6DFEA244CC5E800A3B5E3 /* GoogleService-Info.plist in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		ADF875932478C9F700F8FCBE /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -594,6 +552,7 @@
 				AD17F0652456AAA400CA04FC /* SignUpView.swift in Sources */,
 				ADDD13A92470EB6C003BC8E9 /* TileLoc.swift in Sources */,
 				AD17F0732457F7CF00CA04FC /* RootVM.swift in Sources */,
+				ADF875A32478E02D00F8FCBE /* Model.xcdatamodeld in Sources */,
 				AD17F057244E751500CA04FC /* HomeView.swift in Sources */,
 				AD17F06D2457F7A400CA04FC /* HomeVM.swift in Sources */,
 				ADCA241C245EB74D000531E4 /* CrosswordState.swift in Sources */,
@@ -615,8 +574,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AD6F96D62446604D007F14F9 /* crosswordTests.swift in Sources */,
-				ADF875A02478CA2E00F8FCBE /* test.swift in Sources */,
+				AD6F96D62446604D007F14F9 /* crosswordSchemeTests.swift in Sources */,
+				ADF875A02478CA2E00F8FCBE /* singlePlayerLogicTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -625,14 +584,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD6F96E12446604D007F14F9 /* crosswordUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		ADF875912478C9F700F8FCBE /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				ADF875982478C9F700F8FCBE /* crosswordTest1.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -648,11 +599,6 @@
 			isa = PBXTargetDependency;
 			target = AD6F96BA2446604C007F14F9 /* crossword */;
 			targetProxy = AD6F96DD2446604D007F14F9 /* PBXContainerItemProxy */;
-		};
-		ADF8759B2478C9F700F8FCBE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = AD6F96BA2446604C007F14F9 /* crossword */;
-			targetProxy = ADF8759A2478C9F700F8FCBE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -908,46 +854,6 @@
 			};
 			name = Release;
 		};
-		ADF8759C2478C9F700F8FCBE /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = crosswordTest1/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.mason.crosswordTest1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/crossword.app/crossword";
-			};
-			name = Debug;
-		};
-		ADF8759D2478C9F700F8FCBE /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = crosswordTest1/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.mason.crosswordTest1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/crossword.app/crossword";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -987,16 +893,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		ADF8759E2478C9F700F8FCBE /* Build configuration list for PBXNativeTarget "crosswordTest1" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				ADF8759C2478C9F700F8FCBE /* Debug */,
-				ADF8759D2478C9F700F8FCBE /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		ADF875A12478E02D00F8FCBE /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				ADF875A22478E02D00F8FCBE /* Model.xcdatamodel */,
+			);
+			currentVersion = ADF875A22478E02D00F8FCBE /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = AD6F96B32446604C007F14F9 /* Project object */;
 }
