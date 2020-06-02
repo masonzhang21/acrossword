@@ -24,6 +24,7 @@ struct CrosswordState {
     var currentWord: [TileLoc]?
     var direction: Direction = .across
     var rebus: Bool = false
+    var pencilMode: Bool = false
     
     var clueNum: Int? {
         get {
@@ -31,6 +32,20 @@ struct CrosswordState {
                 return scheme.gridnums[curWord.first!.row][curWord.first!.col]
             } else {
                 return nil
+            }
+        }
+    }
+    
+    var clue: String? {
+        get {
+            guard let clueNum = clueNum else {
+                return nil
+            }
+            switch direction {
+            case .across:
+                return scheme.acrossClues[clueNum]!.clue
+            case .down:
+                return scheme.downClues[clueNum]!.clue
             }
         }
     }

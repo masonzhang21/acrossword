@@ -27,6 +27,15 @@
 		AD17F0712457F7C600CA04FC /* ResetPasswordVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD17F0702457F7C600CA04FC /* ResetPasswordVM.swift */; };
 		AD17F0732457F7CF00CA04FC /* RootVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD17F0722457F7CF00CA04FC /* RootVM.swift */; };
 		AD17F0752457F7EA00CA04FC /* SignUpVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD17F0742457F7EA00CA04FC /* SignUpVM.swift */; };
+		AD577236247CFE9000973301 /* ControlPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD577235247CFE9000973301 /* ControlPanelView.swift */; };
+		AD577238247DFC6D00973301 /* FocusedClue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD577237247DFC6D00973301 /* FocusedClue.swift */; };
+		AD57723B247EE58300973301 /* ControlPanelVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD57723A247EE58300973301 /* ControlPanelVM.swift */; };
+		AD57723D247F09A800973301 /* ViewSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD57723C247F09A800973301 /* ViewSelector.swift */; };
+		AD57723F247F0FA400973301 /* ClueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD57723E247F0FA400973301 /* ClueView.swift */; };
+		AD577241247F0FAC00973301 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD577240247F0FAC00973301 /* InfoView.swift */; };
+		AD577243247F0FD700973301 /* AddFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD577242247F0FD700973301 /* AddFriendView.swift */; };
+		AD577245247F0FE700973301 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD577244247F0FE700973301 /* SettingsView.swift */; };
+		AD577248248244DE00973301 /* extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD577247248244DE00973301 /* extensions.swift */; };
 		AD6F96BF2446604C007F14F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD6F96BE2446604C007F14F9 /* AppDelegate.swift */; };
 		AD6F96C12446604C007F14F9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD6F96C02446604C007F14F9 /* SceneDelegate.swift */; };
 		AD6F96C32446604C007F14F9 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD6F96C22446604C007F14F9 /* RootView.swift */; };
@@ -92,6 +101,15 @@
 		AD17F0702457F7C600CA04FC /* ResetPasswordVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordVM.swift; sourceTree = "<group>"; };
 		AD17F0722457F7CF00CA04FC /* RootVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootVM.swift; sourceTree = "<group>"; };
 		AD17F0742457F7EA00CA04FC /* SignUpVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVM.swift; sourceTree = "<group>"; };
+		AD577235247CFE9000973301 /* ControlPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelView.swift; sourceTree = "<group>"; };
+		AD577237247DFC6D00973301 /* FocusedClue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusedClue.swift; sourceTree = "<group>"; };
+		AD57723A247EE58300973301 /* ControlPanelVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelVM.swift; sourceTree = "<group>"; };
+		AD57723C247F09A800973301 /* ViewSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewSelector.swift; sourceTree = "<group>"; };
+		AD57723E247F0FA400973301 /* ClueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClueView.swift; sourceTree = "<group>"; };
+		AD577240247F0FAC00973301 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
+		AD577242247F0FD700973301 /* AddFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendView.swift; sourceTree = "<group>"; };
+		AD577244247F0FE700973301 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		AD577247248244DE00973301 /* extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extensions.swift; sourceTree = "<group>"; };
 		AD6F96BB2446604C007F14F9 /* crossword.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = crossword.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD6F96BE2446604C007F14F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AD6F96C02446604C007F14F9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -208,8 +226,10 @@
 		AD17F05D24528E1E00CA04FC /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				AD577247248244DE00973301 /* extensions.swift */,
 				AD17F0582450D3B700CA04FC /* ValidationHelper.swift */,
 				AD17F0682457A4EB00CA04FC /* Constants.swift */,
+				AD57723C247F09A800973301 /* ViewSelector.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -217,14 +237,37 @@
 		AD577232247CB31D00973301 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				AD577246247F0FFE00973301 /* Views */,
+				AD577239247DFC7A00973301 /* Models */,
 				ADCA2419245EB73E000531E4 /* CrosswordVM.swift */,
+				AD57723A247EE58300973301 /* ControlPanelVM.swift */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
+		AD577239247DFC7A00973301 /* Models */ = {
+			isa = PBXGroup;
+			children = (
 				ADCA241B245EB74D000531E4 /* CrosswordState.swift */,
 				ADCA2421245FF64D000531E4 /* CrosswordScheme.swift */,
 				ADDD13A82470EB6C003BC8E9 /* TileLoc.swift */,
-				ADCA2417245EB71D000531E4 /* CrosswordView.swift */,
-				ADDD13A6246F4F1C003BC8E9 /* CrosswordTile.swift */,
 			);
-			path = Game;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		AD577246247F0FFE00973301 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				ADCA2417245EB71D000531E4 /* CrosswordView.swift */,
+				AD577235247CFE9000973301 /* ControlPanelView.swift */,
+				AD577240247F0FAC00973301 /* InfoView.swift */,
+				ADDD13A6246F4F1C003BC8E9 /* CrosswordTile.swift */,
+				AD577237247DFC6D00973301 /* FocusedClue.swift */,
+				AD57723E247F0FA400973301 /* ClueView.swift */,
+				AD577242247F0FD700973301 /* AddFriendView.swift */,
+				AD577244247F0FE700973301 /* SettingsView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		AD6F96B22446604C007F14F9 = {
@@ -541,23 +584,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD57723F247F0FA400973301 /* ClueView.swift in Sources */,
 				AD17F055244D425B00CA04FC /* LoginView.swift in Sources */,
 				AD17F0632456A59100CA04FC /* ResetPasswordView.swift in Sources */,
 				ADDD13A7246F4F1C003BC8E9 /* CrosswordTile.swift in Sources */,
 				AD17F0612456513600CA04FC /* ActivityIndicator.swift in Sources */,
+				AD577245247F0FE700973301 /* SettingsView.swift in Sources */,
 				ADCA2418245EB71D000531E4 /* CrosswordView.swift in Sources */,
+				AD57723D247F09A800973301 /* ViewSelector.swift in Sources */,
 				ADCA2422245FF64D000531E4 /* CrosswordScheme.swift in Sources */,
 				AD17F05F2456262E00CA04FC /* LabelledDivider.swift in Sources */,
+				AD577248248244DE00973301 /* extensions.swift in Sources */,
 				AD17F06F2457F7B200CA04FC /* LoginVM.swift in Sources */,
 				AD17F0652456AAA400CA04FC /* SignUpView.swift in Sources */,
 				ADDD13A92470EB6C003BC8E9 /* TileLoc.swift in Sources */,
+				AD577243247F0FD700973301 /* AddFriendView.swift in Sources */,
 				AD17F0732457F7CF00CA04FC /* RootVM.swift in Sources */,
 				ADF875A32478E02D00F8FCBE /* Model.xcdatamodeld in Sources */,
 				AD17F057244E751500CA04FC /* HomeView.swift in Sources */,
 				AD17F06D2457F7A400CA04FC /* HomeVM.swift in Sources */,
+				AD577241247F0FAC00973301 /* InfoView.swift in Sources */,
 				ADCA241C245EB74D000531E4 /* CrosswordState.swift in Sources */,
+				AD577236247CFE9000973301 /* ControlPanelView.swift in Sources */,
 				AD6F96BF2446604C007F14F9 /* AppDelegate.swift in Sources */,
 				AD17F0692457A4EC00CA04FC /* Constants.swift in Sources */,
+				AD57723B247EE58300973301 /* ControlPanelVM.swift in Sources */,
+				AD577238247DFC6D00973301 /* FocusedClue.swift in Sources */,
 				AD6F96C12446604C007F14F9 /* SceneDelegate.swift in Sources */,
 				AD17F0592450D3B700CA04FC /* ValidationHelper.swift in Sources */,
 				AD17F051244D367500CA04FC /* FirebaseAuth.swift in Sources */,

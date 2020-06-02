@@ -140,7 +140,7 @@ class CrosswordVM: ObservableObject {
                 let clue: Clue = scheme.acrossClues[cluenum]!
                 let clueTiles = tilesInSameWord(as: clue.firstTile, dir: .across)
                 for tile in clueTiles {
-                    if state.inputGrid[tile.row][tile.col]! == "" {
+                    if state.input[tile.row][tile.col]! == "" {
                         state.focusedTile = tile
                         state.currentWord = clueTiles
                         return true
@@ -162,7 +162,7 @@ class CrosswordVM: ObservableObject {
                 let clue: Clue = scheme.downClues[cluenum]!
                 let clueTiles = tilesInSameWord(as: clue.firstTile, dir: .down)
                 for tile in clueTiles {
-                    if state.inputGrid[tile.row][tile.col]! == "" {
+                    if state.input[tile.row][tile.col]! == "" {
                         state.focusedTile = tile
                         state.currentWord = clueTiles
                         return true
@@ -211,7 +211,7 @@ class CrosswordVM: ObservableObject {
         } else if skipFilledTiles{
             //finds index of next empty tile in the current word
             let wordEntries: [String] = word.map() {tile in
-                state.inputGrid[tile.row][tile.col]!
+                state.input[tile.row][tile.col]!
             }
             let focusedIndex: Int = word.firstIndex(of: focused)!
             let nextEmptyTileIndex: Int? = wordEntries[(focusedIndex + 1)...].firstIndex(of: "")
@@ -245,10 +245,10 @@ class CrosswordVM: ObservableObject {
             switch state.direction {
             case .across:
                 state.focusedTile = TileLoc(row: focused.row, col: focused.col - 1)
-                state.inputGrid[focused.row][focused.col - 1] = ""
+                state.input[focused.row][focused.col - 1] = ""
             case .down:
                 state.focusedTile = TileLoc(row: focused.row - 1, col: focused.col)
-                state.inputGrid[focused.row - 1][focused.col] = ""
+                state.input[focused.row - 1][focused.col] = ""
 
                 
             }
@@ -279,7 +279,7 @@ class CrosswordVM: ObservableObject {
                     , dir: .across)
             }
             state.focusedTile = state.currentWord!.last
-            state.inputGrid[state.focusedTile!.row][state.focusedTile!.col] = ""
+            state.input[state.focusedTile!.row][state.focusedTile!.col] = ""
         case .down:
             if curNum == 1 {
                 state.direction = .across
@@ -293,7 +293,7 @@ class CrosswordVM: ObservableObject {
                 state.currentWord = tilesInSameWord(as: self.gridnumLoc(of: newNum)!, dir: .down)
             }
             state.focusedTile = state.currentWord!.last
-            state.inputGrid[state.focusedTile!.row][state.focusedTile!.col] = ""
+            state.input[state.focusedTile!.row][state.focusedTile!.col] = ""
         }
         
     }
