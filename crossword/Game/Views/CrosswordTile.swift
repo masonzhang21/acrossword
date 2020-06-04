@@ -11,7 +11,9 @@ import SwiftUI
 
 struct CrosswordTile: UIViewRepresentable {
     
-    @ObservedObject var vm: CrosswordVM
+    var vm: CrosswordVM
+    @ObservedObject var tile: TileState
+
     let loc: TileLoc
     
     
@@ -29,7 +31,6 @@ struct CrosswordTile: UIViewRepresentable {
         textField.contentVerticalAlignment = .bottom
         textField.keyboardType = .alphabet
         textField.autocorrectionType = .no
-
         textField.inputAccessoryView = FocusedClue()
         //textField.adjustsFontSizeToFitWidth = true
         textField.minimumFontSize = 2
@@ -41,6 +42,7 @@ struct CrosswordTile: UIViewRepresentable {
         label.lineBreakMode = .byClipping
         label.numberOfLines = 0
         label.textAlignment = .left
+        
         if let tileNum = vm.scheme.gridnums[loc.row][loc.col] {
             label.text = String(tileNum)
         } else {
@@ -54,41 +56,47 @@ struct CrosswordTile: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UIView, context: Context) {
-        guard let answer = vm.state.input[loc.row][loc.col] else {
-            return
-        }
-        let tile = uiView as! UIStackView
-        let label = tile.arrangedSubviews[0] as! UILabel
-        let textfield = tile.arrangedSubviews[1] as! UITextField
-        textfield.text = answer
+        let container = uiView as! UIStackView
+        let label = container.arrangedSubviews[0] as! UILabel
+        let textfield = container.arrangedSubviews[1] as! UITextField
         
-        if vm.state.focusedTile == nil, textfield.isFirstResponder {
+        textfield.text = tile.text
+        
+        if textfield.isFirstResponder, vm.state.focusedTile == nil {
             textfield.resignFirstResponder()
         }
-        if let focusedTile = vm.state.focusedTile, focusedTile == loc, vm.state.active{
-            textfield.backgroundColor = Constants.Colors.focusedTile
-            label.backgroundColor = Constants.Colors.focusedTile
+        if tile.isFocused {
+            textfield.backgroundColor = Constants.Colors.currentTile
+            label.backgroundColor = Constants.Colors.currentTile
             textfield.becomeFirstResponder()
-        } else if let focusedWord = vm.state.currentWord, focusedWord.contains(loc) {
-            textfield.backgroundColor = Constants.Colors.focusedWord
-            label.backgroundColor = Constants.Colors.focusedWord
-            
+        } else if tile.isCurrentTile {
+            textfield.backgroundColor = Constants.Colors.currentTile
+            label.backgroundColor = Constants.Colors.currentTile
+        } else if tile.isCurrentWord {
+            textfield.backgroundColor = Constants.Colors.currentWord
+            label.backgroundColor = Constants.Colors.currentWord
         } else {
-            textfield.backgroundColor = Constants.Colors.unfocusedTile
-            label.backgroundColor = Constants.Colors.unfocusedTile
-            
+            textfield.backgroundColor = Constants.Colors.defaultTile
+            label.backgroundColor = Constants.Colors.defaultTile
         }
     }
     
     class XWordTextField: UITextField {
         override func deleteBackward() {
             let coordinator = delegate as! Coordinator
-            coordinator.onEmptyDelete()
+            coordinator.onEmptyBackspace()
             super.deleteBackward()
         }
         
         override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
             return false
+        }
+        
+        override public var selectedTextRange: UITextRange? {
+            get {
+                return nil
+            }
+            set { }
         }
     }
     
@@ -100,7 +108,7 @@ struct CrosswordTile: UIViewRepresentable {
         }
         
         @objc func onTap(_ gesture: UIGestureRecognizer) {
-            if parent.loc == parent.vm.state.focusedTile {
+            if parent.tile.isFocused {
                 parent.vm.flipDirection()
             } else {
                 parent.vm.focus(tile: parent.loc)
@@ -108,11 +116,11 @@ struct CrosswordTile: UIViewRepresentable {
         }
         
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            parent.vm.clearFocus()
+            parent.vm.toggleBoard()
             return true
         }
         
-        func onEmptyDelete() {
+        func onEmptyBackspace() {
             parent.vm.prevTile()
         }
     
@@ -121,19 +129,19 @@ struct CrosswordTile: UIViewRepresentable {
         func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
             //delete button pressed on nonempty tile
             if string.count == 0 {
-                let focused = parent.vm.state.focusedTile!
-                parent.vm.state.input[focused.row][focused.col] = ""
+                //parent.tile.text = ""
+                let curTile = parent.vm.state.currentTile
+                parent.vm.state.input[curTile.row][curTile.col] = ""
             }
                 //character entered
             else if string.count == 1 {
                 let wasEmpty: Bool = textField.text!.count == 0
-                let rebus: Bool = parent.vm.state.rebus
-                if rebus {
+                if parent.vm.state.rebusMode {
                     //TO-DO: Implement rebus
                 } else {
-                    let focused = parent.vm.state.focusedTile!
-                    //textField.text = string
-                    parent.vm.state.input[focused.row][focused.col] = string.uppercased()
+                    //parent.tile.text = string.uppercased()
+                    let curTile = parent.vm.state.currentTile
+                    parent.vm.state.input[curTile.row][curTile.col] = string.uppercased()
                     parent.vm.nextTile(wasEmpty: wasEmpty)
                 }
             }

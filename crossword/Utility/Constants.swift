@@ -16,9 +16,9 @@ struct Constants {
         static let lightGrey: Color = Color(red: 230/255, green: 230/255, blue: 230/255)
         static let blue: Color = Color(red: 33/255, green: 150/255, blue: 243/255)
         
-        static let focusedTile: UIColor = UIColor(red: 180/255, green: 80/255, blue: 255/255, alpha: 1)
-        static let focusedWord: UIColor = UIColor(red: 200/255, green: 150/255, blue: 255/255, alpha: 1)
-        static let unfocusedTile: UIColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        static let currentTile: UIColor = UIColor(red: 180/255, green: 80/255, blue: 255/255, alpha: 1)
+        static let currentWord: UIColor = UIColor(red: 200/255, green: 150/255, blue: 255/255, alpha: 1)
+        static let defaultTile: UIColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
 
     }
     

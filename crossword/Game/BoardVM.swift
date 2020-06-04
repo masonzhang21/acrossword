@@ -1,5 +1,5 @@
 //
-//  CrosswordVM.swift
+//  BoardVM.swift
 //  crossword
 //
 //  Created by Mason Zhang on 5/3/20.
@@ -10,9 +10,9 @@ import Foundation
 import Combine
 import SwiftUI
 
-class CrosswordVM {
+class BoardVM {
     
-    var state: CrosswordState
+    @Published var state: CrosswordState
     var scheme: CrosswordScheme
     
     init(scheme: CrosswordScheme) {
@@ -264,6 +264,7 @@ class CrosswordVM {
             }
         }
     }
+    
     
     
     /**

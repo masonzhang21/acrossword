@@ -48,6 +48,9 @@
 		ADCA241A245EB73E000531E4 /* CrosswordVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCA2419245EB73E000531E4 /* CrosswordVM.swift */; };
 		ADCA241C245EB74D000531E4 /* CrosswordState.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCA241B245EB74D000531E4 /* CrosswordState.swift */; };
 		ADCA2422245FF64D000531E4 /* CrosswordScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCA2421245FF64D000531E4 /* CrosswordScheme.swift */; };
+		ADCE3EEC24861F37002849D3 /* TileState.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCE3EEB24861F37002849D3 /* TileState.swift */; };
+		ADCE3EEE24881F98002849D3 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCE3EED24881F98002849D3 /* BoardView.swift */; };
+		ADCE3EF024882020002849D3 /* BoardVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCE3EEF24882020002849D3 /* BoardVM.swift */; };
 		ADDD13A7246F4F1C003BC8E9 /* CrosswordTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDD13A6246F4F1C003BC8E9 /* CrosswordTile.swift */; };
 		ADDD13A92470EB6C003BC8E9 /* TileLoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDD13A82470EB6C003BC8E9 /* TileLoc.swift */; };
 		ADF6DFE8244CC5E800A3B5E3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ADF6DFE7244CC5E800A3B5E3 /* GoogleService-Info.plist */; };
@@ -128,6 +131,9 @@
 		ADCA2419245EB73E000531E4 /* CrosswordVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordVM.swift; sourceTree = "<group>"; };
 		ADCA241B245EB74D000531E4 /* CrosswordState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordState.swift; sourceTree = "<group>"; };
 		ADCA2421245FF64D000531E4 /* CrosswordScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordScheme.swift; sourceTree = "<group>"; };
+		ADCE3EEB24861F37002849D3 /* TileState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileState.swift; sourceTree = "<group>"; };
+		ADCE3EED24881F98002849D3 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		ADCE3EEF24882020002849D3 /* BoardVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardVM.swift; sourceTree = "<group>"; };
 		ADDD13A6246F4F1C003BC8E9 /* CrosswordTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordTile.swift; sourceTree = "<group>"; };
 		ADDD13A82470EB6C003BC8E9 /* TileLoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileLoc.swift; sourceTree = "<group>"; };
 		ADF6DFE7244CC5E800A3B5E3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -241,6 +247,7 @@
 				AD577239247DFC7A00973301 /* Models */,
 				ADCA2419245EB73E000531E4 /* CrosswordVM.swift */,
 				AD57723A247EE58300973301 /* ControlPanelVM.swift */,
+				ADCE3EEF24882020002849D3 /* BoardVM.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -251,6 +258,7 @@
 				ADCA241B245EB74D000531E4 /* CrosswordState.swift */,
 				ADCA2421245FF64D000531E4 /* CrosswordScheme.swift */,
 				ADDD13A82470EB6C003BC8E9 /* TileLoc.swift */,
+				ADCE3EEB24861F37002849D3 /* TileState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -266,6 +274,7 @@
 				AD57723E247F0FA400973301 /* ClueView.swift */,
 				AD577242247F0FD700973301 /* AddFriendView.swift */,
 				AD577244247F0FE700973301 /* SettingsView.swift */,
+				ADCE3EED24881F98002849D3 /* BoardView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -585,6 +594,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD57723F247F0FA400973301 /* ClueView.swift in Sources */,
+				ADCE3EEC24861F37002849D3 /* TileState.swift in Sources */,
 				AD17F055244D425B00CA04FC /* LoginView.swift in Sources */,
 				AD17F0632456A59100CA04FC /* ResetPasswordView.swift in Sources */,
 				ADDD13A7246F4F1C003BC8E9 /* CrosswordTile.swift in Sources */,
@@ -598,6 +608,7 @@
 				AD17F06F2457F7B200CA04FC /* LoginVM.swift in Sources */,
 				AD17F0652456AAA400CA04FC /* SignUpView.swift in Sources */,
 				ADDD13A92470EB6C003BC8E9 /* TileLoc.swift in Sources */,
+				ADCE3EF024882020002849D3 /* BoardVM.swift in Sources */,
 				AD577243247F0FD700973301 /* AddFriendView.swift in Sources */,
 				AD17F0732457F7CF00CA04FC /* RootVM.swift in Sources */,
 				ADF875A32478E02D00F8FCBE /* Model.xcdatamodeld in Sources */,
@@ -616,6 +627,7 @@
 				ADCA241A245EB73E000531E4 /* CrosswordVM.swift in Sources */,
 				AD17F053244D379F00CA04FC /* User.swift in Sources */,
 				AD6F96C32446604C007F14F9 /* RootView.swift in Sources */,
+				ADCE3EEE24881F98002849D3 /* BoardView.swift in Sources */,
 				AD17F0752457F7EA00CA04FC /* SignUpVM.swift in Sources */,
 				AD17F06B2457A73A00CA04FC /* AppData.swift in Sources */,
 				AD17F0712457F7C600CA04FC /* ResetPasswordVM.swift in Sources */,
