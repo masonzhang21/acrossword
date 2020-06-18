@@ -10,40 +10,37 @@ import SwiftUI
 
 struct BoardView: View {
     
-    
-    var body: some View {
-        GeometryReader{geometry in
-            self.buildGrid(geometry)
-        }
+    var core: CrosswordCore
+    var actions: BoardActions
+    var size: CGFloat
+    init(core: CrosswordCore, size: CGFloat) {
+        self.core = core
+        self.size = size
+        actions = BoardActions(core: core)
+        
     }
     
-    func buildGrid(_ geometry: GeometryProxy) -> some View{
-        func makeTile(at loc: TileLoc) -> some View {
-            Group {
-            if vm.scheme.grid[loc.row][loc.col] == nil {
+    func makeTile(at loc: TileLoc) -> some View {
+        Group {
+            if core.scheme.grid[loc.row][loc.col] == nil {
                 Rectangle().fill(Color.black).onTapGesture {
-                    self.vm.toggleBoard()
+                    self.core.toggleBoard()
                 }
             } else {
-                CrosswordTile(vm: self.vm, tile: self.vm.state.grid[loc.row][loc.col]!, loc: loc)
-                }
+                CrosswordTile(core: self.core, actions: self.actions, tile: self.core.state.tileBindings[loc.row][loc.col]!, loc: loc)
             }
         }
-        
-        return VStack(spacing: 0) {
-            ForEach(0..<self.vm.scheme.numRows) {i in
+    }
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(0..<self.core.scheme.numRows) {i in
                 HStack(spacing: 0) {
-                    ForEach(0..<self.vm.scheme.numCols) {j in
-                        makeTile(at: TileLoc(row: i, col: j)).border(Color.gray, width: 0.5)
+                    ForEach(0..<self.core.scheme.numCols) {j in
+                        self.makeTile(at: TileLoc(row: i, col: j)).border(Color.gray, width: 0.5)
                     }
                 }
             }
-            }.border(Color.black, width: 1).frame(width: geometry.size.width, height: geometry.size.width)
+        }.border(Color.black, width: 1).frame(maxWidth: size, maxHeight: size) //might not work for nonsquare puzzles?
     }
 }
 
-struct BoardView_Previews: PreviewProvider {
-    static var previews: some View {
-        BoardView()
-    }
-}

@@ -19,18 +19,18 @@ struct HomeView: View {
                 Text("Sign Out")
             }.padding()
                 .frame(minWidth: 0, maxWidth: .infinity)
-                .foregroundColor(Color(UIColor.white))
+                .foregroundColor(Color(UIColor.black))
                 .cornerRadius(10)
             if (appData.user != nil) {
             Text(appData.user!.uid)
             }
-            Button(action: {self.appData.changeView(view: CrosswordView(scheme: self.vm.parse()))}) {
+            Button(action: {self.appData.changeView(view: GameView(scheme: self.vm.parse()))}) {
                 Text("Play!").padding()
                 .frame(minWidth: 0, maxWidth: .infinity)
-                .foregroundColor(Color(UIColor.white))
+                .foregroundColor(Color(UIColor.black))
                 .cornerRadius(10)
             }
-        }
+        }.onAppear(perform: {self.appData.changeView(view: GameView(scheme: self.vm.parse()))})
     }
 }
 

@@ -13,5 +13,6 @@ class TileState: ObservableObject {
     @Published var isFocused: Bool = false
     @Published var isCurrentTile: Bool = false
     @Published var isCurrentWord: Bool = false
+    @Published var font: Font = .normal
     @Published var text: String = ""
 }

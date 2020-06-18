@@ -11,14 +11,20 @@ import SwiftUI
 
 struct CrosswordTile: UIViewRepresentable {
     
-    var vm: CrosswordVM
+    var core: CrosswordCore
+    var actions: BoardActions
     @ObservedObject var tile: TileState
-
+    
     let loc: TileLoc
     
     
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
+    }
+    
+    func makeClueDisplay() -> UIView {
+        //computed property clueNum and clue, derived from currentWord or smth which are observable
+        return UIView()
     }
     
     func makeUIView(context: Context) -> UIView {
@@ -31,54 +37,85 @@ struct CrosswordTile: UIViewRepresentable {
         textField.contentVerticalAlignment = .bottom
         textField.keyboardType = .alphabet
         textField.autocorrectionType = .no
-        textField.inputAccessoryView = FocusedClue()
-        //textField.adjustsFontSizeToFitWidth = true
-        textField.minimumFontSize = 2
         
-        let label = UILabel()
+        //UIHostingController's view's center is originally set to the top left corner of its parent view, and so cluePanel is vertically and horizontally centered on the its parent's top left point. In order for cluePanel to be correctly aligned with the keyboard, it's placed inside an invisible UIView (cluePanelContainer) with the same dimensions as cluePanel, and its center is shifted to the center point of cluePanelContainer's frame.
+        let cluePanelContainer = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 60))
+        let cluePanel = UIHostingController(rootView: CluePanel(actions: actions, core: core, clueTracker: core.state.clueTracker)).view!
+        cluePanel.center = CGPoint(x: cluePanelContainer.frame.size.width  / 2, y: cluePanelContainer.frame.size.height / 2)
+        cluePanelContainer.addSubview(cluePanel)
+        textField.inputAccessoryView = cluePanelContainer
+        
+        /*
+        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 60))
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(actions.nextWord))
+        toolBar.items = [doneButton]
+        toolBar.setItems([doneButton], animated: true)
+        textField.inputAccessoryView = toolBar*/
+        
+        
+        //labelContainer used to get some top padding
+        let labelContainer = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 12))
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 11))
         label.font = label.font.withSize(8)
-        label.adjustsFontSizeToFitWidth = true
-        label.minimumScaleFactor = 0.1
-        label.lineBreakMode = .byClipping
-        label.numberOfLines = 0
         label.textAlignment = .left
-        
-        if let tileNum = vm.scheme.gridnums[loc.row][loc.col] {
-            label.text = String(tileNum)
+        labelContainer.addSubview(label)
+
+
+        if let tileNum = core.scheme.gridnums[loc.row][loc.col] {
+            //hacky way of getting some left padding
+            label.text = " " + String(tileNum)
         } else {
             label.text = ""
         }
         
-        let stackedInfoView = UIStackView(arrangedSubviews: [label, textField])
-        stackedInfoView.axis = .vertical
-        stackedInfoView.distribution = .fillProportionally
-        return stackedInfoView
+        let containerView = UIStackView(arrangedSubviews: [labelContainer, textField])
+
+        containerView.axis = .vertical
+        containerView.distribution = .fillProportionally
+
+        let backgroundView = UIView(frame: containerView.bounds)
+        backgroundView.backgroundColor = UIColor.white
+        backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        containerView.insertSubview(backgroundView, at: 0)
+        
+        
+        return containerView
     }
     
     func updateUIView(_ uiView: UIView, context: Context) {
         let container = uiView as! UIStackView
-        let label = container.arrangedSubviews[0] as! UILabel
-        let textfield = container.arrangedSubviews[1] as! UITextField
+        let background = container.subviews[0]
+        let textfield = container.subviews[2] as! UITextField
         
         textfield.text = tile.text
         
-        if textfield.isFirstResponder, vm.state.focusedTile == nil {
+        if textfield.isFirstResponder, core.state.focusedTile == nil {
             textfield.resignFirstResponder()
+            return
         }
+        
         if tile.isFocused {
-            textfield.backgroundColor = Constants.Colors.currentTile
-            label.backgroundColor = Constants.Colors.currentTile
             textfield.becomeFirstResponder()
+            background.backgroundColor = Constants.Colors.currentTile
         } else if tile.isCurrentTile {
-            textfield.backgroundColor = Constants.Colors.currentTile
-            label.backgroundColor = Constants.Colors.currentTile
+            background.backgroundColor = Constants.Colors.currentTile
         } else if tile.isCurrentWord {
-            textfield.backgroundColor = Constants.Colors.currentWord
-            label.backgroundColor = Constants.Colors.currentWord
+            background.backgroundColor = Constants.Colors.currentWord
         } else {
-            textfield.backgroundColor = Constants.Colors.defaultTile
-            label.backgroundColor = Constants.Colors.defaultTile
+            background.backgroundColor = Constants.Colors.defaultTile
         }
+        
+        switch tile.font {
+        case .correct:
+            textfield.textColor = Constants.Colors.correctAns
+        case .incorrect:
+            textfield.textColor = Constants.Colors.incorrectAns
+        case .pencil:
+            textfield.textColor = Constants.Colors.pencilAns
+        case .normal:
+            textfield.textColor = Constants.Colors.defaultAns
+        
+    }
     }
     
     class XWordTextField: UITextField {
@@ -107,42 +144,47 @@ struct CrosswordTile: UIViewRepresentable {
             self.parent = parent
         }
         
+        
         @objc func onTap(_ gesture: UIGestureRecognizer) {
             if parent.tile.isFocused {
-                parent.vm.flipDirection()
+                parent.core.flipDirection()
             } else {
-                parent.vm.focus(tile: parent.loc)
+                parent.core.focus(tile: parent.loc)
             }
         }
         
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            parent.vm.toggleBoard()
+            parent.core.toggleBoard()
             return true
         }
         
         func onEmptyBackspace() {
-            parent.vm.prevTile()
+            parent.actions.prevTile()
         }
-    
+        
         
         
         func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-            //delete button pressed on nonempty tile
+            let crosswordState = parent.core.state
+            
             if string.count == 0 {
-                //parent.tile.text = ""
-                let curTile = parent.vm.state.currentTile
-                parent.vm.state.input[curTile.row][curTile.col] = ""
-            }
+                //delete button pressed on nonempty tile
+                let curTile = crosswordState.currentTile
+                crosswordState.input[curTile.row][curTile.col]!.text = ""
+            } else if string.count == 1 {
                 //character entered
-            else if string.count == 1 {
                 let wasEmpty: Bool = textField.text!.count == 0
-                if parent.vm.state.rebusMode {
+                if crosswordState.rebusMode {
                     //TO-DO: Implement rebus
                 } else {
-                    //parent.tile.text = string.uppercased()
-                    let curTile = parent.vm.state.currentTile
-                    parent.vm.state.input[curTile.row][curTile.col] = string.uppercased()
-                    parent.vm.nextTile(wasEmpty: wasEmpty)
+                    let curTile = crosswordState.currentTile
+                    crosswordState.input[curTile.row][curTile.col]!.text = string.uppercased()
+                    if crosswordState.pencilMode {
+                        crosswordState.input[curTile.row][curTile.col]!.color = .pencil
+                    } else {
+                        crosswordState.input[curTile.row][curTile.col]!.color = .normal
+                    }
+                    parent.actions.nextTile(wasEmpty: wasEmpty)
                 }
             }
             return false

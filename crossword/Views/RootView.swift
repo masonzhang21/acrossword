@@ -14,13 +14,13 @@ struct RootView: View {
     @EnvironmentObject var appData: AppData
     
     var body: some View {
-        Color.blue.overlay(Group {
+        Group {
             if (appData.user == nil) {
-            LoginView(vm: LoginVM())
-        } else {
-            appData.currentView
-        }
-        }.onAppear(perform: {self.vm.setAuthStateChangeListener(appData: self.appData)}))
+                LoginView(vm: LoginVM())
+            } else {
+                appData.currentView
+            }
+        }.onAppear(perform: {self.vm.setAuthStateChangeListener(appData: self.appData)})
     }
 }
 

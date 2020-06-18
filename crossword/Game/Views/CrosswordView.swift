@@ -8,18 +8,19 @@
 
 import SwiftUI
 
-struct CrosswordView: View {
-    lazy var state: CrosswordState
-    var scheme: CrosswordScheme
+struct GameView: View {
+    
+    var core: CrosswordCore
     
     init(scheme: CrosswordScheme) {
-        vm = CrosswordVM(scheme: scheme)
+        core = CrosswordCore(scheme: scheme)
     }
     //everyone needs to share a state so
     var body: some View {
         NavigationView{
             VStack {
-                ControlPanelView(vm: ControlPanelVM(state: $vm.state))
+                //ControlPanelView(vm: ControlPanelVM(state: $vm.state))
+                BoardView(core: core)
             }.padding()
         }
     }
@@ -29,7 +30,7 @@ struct CrosswordView: View {
 
 struct CrosswordView_Previews: PreviewProvider {
     static var previews: some View {
-        CrosswordView(scheme: CrosswordScheme(id: "")!)
+        GameView(scheme: CrosswordScheme(id: "")!)
     }
 }
 
