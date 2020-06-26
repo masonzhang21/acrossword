@@ -14,7 +14,11 @@ import SwiftUI
 struct GameView: View {
     
     var core: CrosswordCore
-    @State var clueMode: Bool = false
+    @State var clueMode: Bool = false {
+        didSet {
+            clueMode ? core.deactivateBoard() : core.activateBoard()
+        }
+    }
     @State var navbarHidden = true
     init(scheme: CrosswordScheme) {
         core = CrosswordCore(scheme: scheme)
@@ -28,9 +32,11 @@ struct GameView: View {
                     if self.core.state.isMultiplayer {
                         
                     }
-                    BoardView(core: self.core, size: geometry.size.width)//modifier make small if clueMode
+                    BoardView(core: self.core, size: geometry.size.width).onTapGesture {
+                        self.clueMode = false
+                    }
                     if self.clueMode {
-                        //make clueview visible and bigger if clueMode=true
+                        ClueView(core: self.core)
                     }
                 }
                 Spacer()

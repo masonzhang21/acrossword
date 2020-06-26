@@ -53,10 +53,12 @@ struct CrosswordDataJSON: Decodable {
     var title: String
 }
 
-struct Clue {
-    var clue: String
-    var answer: String
-    var firstTile: TileLoc
+struct Clue: Equatable {
+    let clue: String
+    let answer: String
+    let firstTile: TileLoc
+    let num: Int
+    let dir: Direction
 }
 
 struct CrosswordScheme {
@@ -152,13 +154,13 @@ struct CrosswordScheme {
         var downClueNums: [Int] = []
         for i in 0..<aClues.count {
             let clueNum: Int = clueNumber(of: aClues[i])
-            let clue: Clue = Clue(clue: aClues[i], answer: aAnswers[i], firstTile: gridnumLocs[clueNum]!)
+            let clue: Clue = Clue(clue: aClues[i], answer: aAnswers[i], firstTile: gridnumLocs[clueNum]!, num: clueNum, dir: .across)
             acrossClueNums.append(clueNum)
             acrossClues[clueNum] = clue
         }
         for i in 0..<dClues.count {
             let clueNum: Int = clueNumber(of: dClues[i])
-            let clue: Clue = Clue(clue: dClues[i], answer: dAnswers[i], firstTile: gridnumLocs[clueNum]!)
+            let clue: Clue = Clue(clue: dClues[i], answer: dAnswers[i], firstTile: gridnumLocs[clueNum]!, num: clueNum, dir: .down)
             downClueNums.append(clueNum)
             downClues[clueNum] = clue
         }

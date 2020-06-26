@@ -19,9 +19,11 @@ struct CluePanel: View {
                 Image(systemName: "arrowtriangle.left").foregroundColor(Color.white).frame(maxHeight: .infinity)
             }.padding().background(Constants.Colors.cluePanelArrows)
             Spacer()
-            Text(clueTracker.clue).frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            Button(action: self.core.flipDirection) {
+                Text(clueTracker.clue.clue).frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            }
             Spacer()
-            Button(action: self.actions.nextWord) {
+            Button(action: {self.actions.nextWord()}) {
                 Image(systemName: "arrowtriangle.right").foregroundColor(Color.white).frame(maxHeight: .infinity)
             }.padding().background(Constants.Colors.cluePanelArrows)
         }.frame(width: UIScreen.main.bounds.size.width, height: 60, alignment: .leading).background(Constants.Colors.cluePanel)

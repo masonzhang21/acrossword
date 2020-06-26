@@ -38,20 +38,10 @@ struct CrosswordTile: UIViewRepresentable {
         textField.keyboardType = .alphabet
         textField.autocorrectionType = .no
         
-        //UIHostingController's view's center is originally set to the top left corner of its parent view, and so cluePanel is vertically and horizontally centered on the its parent's top left point. In order for cluePanel to be correctly aligned with the keyboard, it's placed inside an invisible UIView (cluePanelContainer) with the same dimensions as cluePanel, and its center is shifted to the center point of cluePanelContainer's frame.
-        let cluePanelContainer = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 60))
+        //SwiftUI view
         let cluePanel = UIHostingController(rootView: CluePanel(actions: actions, core: core, clueTracker: core.state.clueTracker)).view!
-        cluePanel.center = CGPoint(x: cluePanelContainer.frame.size.width  / 2, y: cluePanelContainer.frame.size.height / 2)
-        cluePanelContainer.addSubview(cluePanel)
-        textField.inputAccessoryView = cluePanelContainer
-        
-        /*
-        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 60))
-        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(actions.nextWord))
-        toolBar.items = [doneButton]
-        toolBar.setItems([doneButton], animated: true)
-        textField.inputAccessoryView = toolBar*/
-        
+        cluePanel.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 60)
+        textField.inputAccessoryView = cluePanel
         
         //labelContainer used to get some top padding
         let labelContainer = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 12))
@@ -83,40 +73,40 @@ struct CrosswordTile: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UIView, context: Context) {
-        let container = uiView as! UIStackView
-        let background = container.subviews[0]
-        let textfield = container.subviews[2] as! UITextField
-        
-        textfield.text = tile.text
-        
-        if textfield.isFirstResponder, core.state.focusedTile == nil {
-            textfield.resignFirstResponder()
-            return
-        }
-        
-        if tile.isFocused {
-            textfield.becomeFirstResponder()
-            background.backgroundColor = Constants.Colors.currentTile
-        } else if tile.isCurrentTile {
-            background.backgroundColor = Constants.Colors.currentTile
-        } else if tile.isCurrentWord {
-            background.backgroundColor = Constants.Colors.currentWord
-        } else {
-            background.backgroundColor = Constants.Colors.defaultTile
-        }
-        
-        switch tile.font {
-        case .correct:
-            textfield.textColor = Constants.Colors.correctAns
-        case .incorrect:
-            textfield.textColor = Constants.Colors.incorrectAns
-        case .pencil:
-            textfield.textColor = Constants.Colors.pencilAns
-        case .normal:
-            textfield.textColor = Constants.Colors.defaultAns
-        
+          let container = uiView as! UIStackView
+          let background = container.subviews[0]
+          let textfield = container.subviews[2] as! UITextField
+          
+          textfield.text = tile.text
+          
+          if textfield.isFirstResponder, core.state.focusedTile == nil {
+              textfield.resignFirstResponder()
+              return
+          }
+          if tile.isFocused {
+              textfield.becomeFirstResponder()
+              background.backgroundColor = Constants.Colors.currentTile
+          } else if tile.isCurrentTile {
+              background.backgroundColor = Constants.Colors.currentTile
+          } else if tile.isCurrentWord {
+              background.backgroundColor = Constants.Colors.currentWord
+          } else {
+              background.backgroundColor = Constants.Colors.defaultTile
+          }
+          
+          switch tile.font {
+          case .correct:
+              textfield.textColor = Constants.Colors.correctAns
+          case .incorrect:
+              textfield.textColor = Constants.Colors.incorrectAns
+          case .pencil:
+              textfield.textColor = Constants.Colors.pencilAns
+          case .normal:
+              textfield.textColor = Constants.Colors.defaultAns
+          
+      }
     }
-    }
+    
     
     class XWordTextField: UITextField {
         override func deleteBackward() {
@@ -146,16 +136,13 @@ struct CrosswordTile: UIViewRepresentable {
         
         
         @objc func onTap(_ gesture: UIGestureRecognizer) {
-            if parent.tile.isFocused {
+            if !parent.core.state.active {
+                parent.core.activateBoard()
+            } else if parent.tile.isFocused {
                 parent.core.flipDirection()
             } else {
                 parent.core.focus(tile: parent.loc)
             }
-        }
-        
-        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            parent.core.toggleBoard()
-            return true
         }
         
         func onEmptyBackspace() {

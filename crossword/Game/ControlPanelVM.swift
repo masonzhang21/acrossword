@@ -13,7 +13,11 @@ import SwiftUI
 
 class ControlPanelVM: ObservableObject {
     var core: CrosswordCore
-    @Binding var clueMode: Bool
+    @Binding var clueMode: Bool {
+        didSet {
+            clueMode ? core.deactivateBoard() : core.activateBoard()
+        }
+    }
     @Binding var navbarHidden: Bool
     @Published var displayCheckDropdown: Bool = false {
         didSet {

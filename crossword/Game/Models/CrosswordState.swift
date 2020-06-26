@@ -28,16 +28,6 @@ struct Guess: Equatable {
 }
 
 class CrosswordState {
-    //DESIGN CHOICE: putting grid in CrosswordState is questionable?
-    var tileBindings: [[TileState?]]
-    
-    var clueTracker: ClueTracker
-    
-    var isMultiplayer: Bool = false
-    var multiplayerFocusedTiles: [TileLoc]?
-    var direction: Direction = .across
-    var rebusMode: Bool = false
-    var pencilMode: Bool = false
     var active: Bool = true {
         didSet {
             if active {
@@ -47,7 +37,16 @@ class CrosswordState {
             }
         }
     }
+    //make a ClueMode wrapper for an OO and move clueMode logic there
+    //var boardSwitch:
+    var clueTracker: ClueTracker
+
+    var tileBindings: [[TileState?]]
     
+    var isMultiplayer: Bool = false
+    var multiplayerFocusedTiles: [TileLoc]?
+    var pencilMode: Bool = false
+    var direction: Direction = .across
     //only change one at a time (no replacing rows/entire 2d array)
     var input: [[Guess?]] {
         didSet {
@@ -81,7 +80,6 @@ class CrosswordState {
             }
         }
     }
-    
     var currentTile: TileLoc {
         willSet {
             //makes the current tile not the current tile anymore
@@ -103,7 +101,6 @@ class CrosswordState {
                 newTile.isCurrentWord = true
             }
         }
-        
         didSet {
             clueTracker.updateClue(to: currentWord, direction: direction)
         }

@@ -8,23 +8,21 @@
 
 import Foundation
 class ClueTracker: ObservableObject {
-    @Published var clueNum: Int
-    @Published var clue: String
+    @Published var clue: Clue
     var scheme: CrosswordScheme
     
     init(scheme: CrosswordScheme) {
         self.scheme = scheme
-        clueNum = 1
-        clue = scheme.acrossClues[1]!.clue
+        clue = scheme.acrossClues[1]!
     }
     
     func updateClue(to currentWord: [TileLoc], direction: Direction) {
-        clueNum = scheme.gridnums[currentWord.first!.row][currentWord.first!.col]!
+        let clueNum = scheme.gridnums[currentWord.first!.row][currentWord.first!.col]!
         switch direction {
         case .across:
-            clue = scheme.acrossClues[clueNum]!.clue
+            clue = scheme.acrossClues[clueNum]!
         case .down:
-            clue = scheme.downClues[clueNum]!.clue
+            clue = scheme.downClues[clueNum]!
         }
     }
 }

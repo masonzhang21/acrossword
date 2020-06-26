@@ -273,11 +273,11 @@
 				AD577235247CFE9000973301 /* ControlPanelView.swift */,
 				ADCE3EED24881F98002849D3 /* BoardView.swift */,
 				ADDD13A6246F4F1C003BC8E9 /* CrosswordTile.swift */,
-				AD577240247F0FAC00973301 /* InfoView.swift */,
+				AD9A2712249429FA009148E0 /* CluePanel.swift */,
 				AD57723E247F0FA400973301 /* ClueView.swift */,
 				AD577242247F0FD700973301 /* AddFriendView.swift */,
+				AD577240247F0FAC00973301 /* InfoView.swift */,
 				AD577244247F0FE700973301 /* SettingsView.swift */,
-				AD9A2712249429FA009148E0 /* CluePanel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

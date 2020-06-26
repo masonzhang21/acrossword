@@ -23,9 +23,7 @@ struct BoardView: View {
     func makeTile(at loc: TileLoc) -> some View {
         Group {
             if core.scheme.grid[loc.row][loc.col] == nil {
-                Rectangle().fill(Color.black).onTapGesture {
-                    self.core.toggleBoard()
-                }
+                Rectangle().fill(Color.black)
             } else {
                 CrosswordTile(core: self.core, actions: self.actions, tile: self.core.state.tileBindings[loc.row][loc.col]!, loc: loc)
             }
@@ -40,7 +38,7 @@ struct BoardView: View {
                     }
                 }
             }
-        }.border(Color.black, width: 1).frame(maxWidth: size, maxHeight: size) //might not work for nonsquare puzzles?
+        }.border(Color.black, width: 1).frame(width: size, height: size) //might not work for nonsquare puzzles?
     }
 }
 

@@ -42,6 +42,17 @@ class CrosswordCore {
     }
     
     /**
+     Returns the first empty tile in a list of tiles, or the first tile if all tiles are filled. Input is usually currentWord.
+     */
+    func firstEmptyTile(in word: [TileLoc]) -> TileLoc {
+        for tile in word {
+            if state.input[tile.row][tile.col]!.text == "" {
+                return tile
+            }
+        }
+        return word.first!
+    }
+    /**
      Returns all tiles in the same word as the lookup tile (including the lookup tile) in the order they appear in the word
      
      - Parameters:
@@ -111,12 +122,14 @@ class CrosswordCore {
     }
     
     
-    func toggleBoard() {
-        if state.focusedTile == nil {
-            state.focusedTile = state.currentTile
-        } else {
-            state.focusedTile = nil
-        }
+    func deactivateBoard() {
+        state.focusedTile = nil
+        state.active = false
+    }
+    
+    func activateBoard() {
+        state.focusedTile = state.currentTile
+        state.active = true
     }
     
     /**
