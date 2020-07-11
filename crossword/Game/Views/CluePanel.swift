@@ -30,8 +30,10 @@ struct CluePanel: View {
     }
 }
 
+/*
 struct CluePanel_Previews: PreviewProvider {
     static var previews: some View {
         CluePanel(actions: BoardActions(core: CrosswordCore(scheme: CrosswordScheme(id: "")!)), core: CrosswordCore(scheme: CrosswordScheme(id: "")!), clueTracker: ClueTracker(scheme: CrosswordScheme(id: "")!))
     }
 }
+*/

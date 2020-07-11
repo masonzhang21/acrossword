@@ -8,7 +8,7 @@
 
 import Foundation
 
-/**fdsafdsfsdfsdfsdfdsfsdsdfsdfdsfdsfsfsfsf
+/**
  Simple struct for representing the location of a Tile. Zero-indexed, starting from row 0 and col 0.
  */
 struct TileLoc: Equatable {

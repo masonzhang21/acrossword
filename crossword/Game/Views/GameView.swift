@@ -8,20 +8,24 @@
 
 import SwiftUI
 
-/*
- 
- */
 struct GameView: View {
     
-    var core: CrosswordCore
+    var core: CrosswordCore!
+    @State var loadingMode: Bool = false
     @State var clueMode: Bool = false {
         didSet {
             clueMode ? core.deactivateBoard() : core.activateBoard()
         }
     }
     @State var navbarHidden = true
-    init(scheme: CrosswordScheme) {
-        core = CrosswordCore(scheme: scheme)
+    @EnvironmentObject var appData: AppData
+    init(id: CrosswordID, user: User) {
+        core = CrosswordCore(id: id, user: user, loadingFlag: $loadingMode)
+    }
+    
+    func saveState() {
+        CrosswordIO.storeCrosswordState(user: appData.user!, state: core.state, id: core.id)
+        //state/id -> StoredCrossword, call Firestore store in CrosswordIO
     }
     
     var body: some View {
@@ -32,8 +36,10 @@ struct GameView: View {
                     if self.core.state.isMultiplayer {
                         
                     }
+                    if !self.loadingMode {
                     BoardView(core: self.core, size: geometry.size.width).onTapGesture {
                         self.clueMode = false
+                    }
                     }
                     if self.clueMode {
                         ClueView(core: self.core)
@@ -41,16 +47,16 @@ struct GameView: View {
                 }
                 Spacer()
                 }.padding().navigationBarTitle("").navigationBarHidden(navbarHidden)
-        }
+        }.onDisappear(perform: self.saveState)
     }
 }
 
-
+/*
 struct CrosswordView_Previews: PreviewProvider {
     static var previews: some View {
         GameView(scheme: CrosswordScheme(id: "")!)
     }
 }
-
+*/
 //CrosswordView needs to own scheme/state
 

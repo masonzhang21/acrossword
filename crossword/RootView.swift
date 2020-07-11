@@ -12,15 +12,10 @@ struct RootView: View {
     
     var vm: RootVM
     @EnvironmentObject var appData: AppData
-    
     var body: some View {
-        Group {
-            if (appData.user == nil) {
-                LoginView(vm: LoginVM())
-            } else {
-                appData.currentView
-            }
-        }.onAppear(perform: {self.vm.setAuthStateChangeListener(appData: self.appData)})
+        appData.currentView.onAppear(perform: {
+            self.vm.setAuthStateChangeListener(appData: self.appData)
+        })
     }
 }
 

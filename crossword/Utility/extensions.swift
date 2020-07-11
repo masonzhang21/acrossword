@@ -33,53 +33,6 @@ extension UIApplication {
     }
 }
 
-extension UITextView {
-    open override func canPerformAction(_ action: Selector, withSender
-        sender: Any?) -> Bool {
-        return false
-    }
-}
-extension UIStackView {
-    open override func canPerformAction(_ action: Selector, withSender
-        sender: Any?) -> Bool {
-        return false
-    }
-}
-extension UINavigationController {
-    open override func canPerformAction(_ action: Selector, withSender
-        sender: Any?) -> Bool {
-        return false
-    }
-}
-
-extension UIViewController {
-    open override func canPerformAction(_ action: Selector, withSender
-        sender: Any?) -> Bool {
-        return false
-    }
-}
-
-extension UIWindow {
-    open override func canPerformAction(_ action: Selector, withSender
-        sender: Any?) -> Bool {
-        return false
-    }
-}
-
-extension UIWindowScene {
-    open override func canPerformAction(_ action: Selector, withSender
-        sender: Any?) -> Bool {
-        return false
-    }
-}
-
-extension UIApplication {
-    open override func canPerformAction(_ action: Selector, withSender
-        sender: Any?) -> Bool {
-        return false
-    }
-}
-
 extension AppDelegate {
     open override func canPerformAction(_ action: Selector, withSender
         sender: Any?) -> Bool {

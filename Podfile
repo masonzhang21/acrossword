@@ -18,9 +18,12 @@ target 'crossword' do
 
   pod 'Firebase/Analytics'
   pod 'Firebase/Auth'	
-  pod 'Firebase/Firestore'	
+  pod 'Firebase/Firestore'
+  pod 'FirebaseFirestoreSwift'
+	
   pod 'Validator'
   pod 'SwiftyJSON', '~> 4.0'
+
 
 
 

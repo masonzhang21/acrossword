@@ -161,7 +161,7 @@ struct CrosswordTile: UIViewRepresentable {
             } else if string.count == 1 {
                 //character entered
                 let wasEmpty: Bool = textField.text!.count == 0
-                if crosswordState.rebusMode {
+                if false {
                     //TO-DO: Implement rebus
                 } else {
                     let curTile = crosswordState.currentTile

@@ -11,36 +11,21 @@ import Combine
 import SwiftUI
 
 class CrosswordCore {
-    
     var state: CrosswordState
     var scheme: CrosswordScheme
-    
-    init(scheme: CrosswordScheme) {
-        self.scheme = scheme
-        
-        let clueTracker = ClueTracker(scheme: scheme)
-        let emptyInputRow: [Guess?] = Array(repeating: nil, count: scheme.numCols)
-        var emptyInputGrid: [[Guess?]] = Array(repeating: emptyInputRow, count: scheme.numRows)
-        let emptyBindingsRow: [TileState?] = Array(repeating: nil, count: scheme.numCols)
-        var emptyBindingsGrid: [[TileState?]] = Array(repeating: emptyBindingsRow, count: scheme.numRows)
-        for i in 0..<scheme.numRows {
-            for j in 0..<scheme.numCols {
-                if scheme.grid[i][j] != nil {
-                    emptyInputGrid[i][j] = Guess()
-                    emptyBindingsGrid[i][j] = TileState()
-                }
+    var id: CrosswordID
+    init(id: CrosswordID, user: User, loadingFlag: Binding<Bool>) {
+        self.id = id
+        scheme = CrosswordBuilder.buildCrosswordScheme(for: id)
+        state = CrosswordBuilder.newCrosswordState(from: scheme)
+        CrosswordIO.retrieveCrosswordState(user: user, id: id) { stored in
+            guard let stored = stored else {
+                return
             }
+            let storedState = CrosswordBuilder.buildCrosswordState(from: stored)
+            self.state.input = storedState.input
         }
-
-        //giving dummy initializations to currentTile and currentWord lets us use the instance methods gridnumLoc and tilesInSameWord to compute the two properties. Doing it this way also calls their willSet observers, which wouldn't be the case if we initialized the values with the initializer.
-        self.state = CrosswordState(clueTracker: clueTracker, initBindingsGrid: emptyBindingsGrid, initInputGrid: emptyInputGrid, initTile: TileLoc(row: 0, col: 0), initWord: [])
-        let currentTile: TileLoc = gridnumLoc(of: 1)!
-        let currentWord: [TileLoc] = tilesInSameWord(as: currentTile, dir: .across)
-        self.state.focusedTile = currentTile
-        self.state.currentTile = currentTile
-        self.state.currentWord = currentWord
     }
-    
     /**
      Returns the first empty tile in a list of tiles, or the first tile if all tiles are filled. Input is usually currentWord.
      */

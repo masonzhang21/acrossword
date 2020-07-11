@@ -8,7 +8,6 @@
 
 import Foundation
 import SwiftyJSON
-//if we add other crossword formats, make a struct that takes as input a CrosswordDataJSON but conforms to CrosswordData protocol
 
 struct Answers: Decodable {
     var across: [String]
@@ -17,40 +16,6 @@ struct Answers: Decodable {
 struct Size: Decodable {
     var cols: Int
     var rows: Int
-}
-struct CrosswordDataJSON: Decodable {
-    var acrossmap: String?
-    var admin: String?
-    var autowrap: String?
-    var bbars: String?
-    var circles: String?
-    var code: String?
-    var downmap: String?
-    var hold: String?
-    var id: String?
-    var id2: String?
-    var interpretcolors: String?
-    var jnotes: String?
-    var key: String?
-    var mini: String?
-    var notepad: String?
-    var rbars: String?
-    var shadecircles: String?
-    var track: String?
-    var type: String?
-    
-    var answers: Answers
-    var author: String
-    var clues: Answers
-    var copyright: String
-    var date: String
-    var dow: String
-    var editor: String
-    var grid: [String]
-    var gridnums: [Int]
-    var publisher: String
-    var size: Size
-    var title: String
 }
 
 struct Clue: Equatable {
@@ -62,43 +27,36 @@ struct Clue: Equatable {
 }
 
 struct CrosswordScheme {
+    let acrossClues: [Int: Clue]
+    let downClues: [Int: Clue]
+    let acrossClueNums: [Int]
+    let downClueNums: [Int]
+    let author: String
+    let editor: String
+    let publisher: String
+    let copyright: String
     
-    var acrossClues: [Int: Clue]
-    var downClues: [Int: Clue]
-    var acrossClueNums: [Int]
-    var downClueNums: [Int]
-    var author: String
-    var editor: String
-    var publisher: String
-    var copyright: String
+    let date: String
+    let dow: String
     
-    var date: String
-    var dow: String
+    let grid: [[String?]]
+    let gridnums: [[Int?]]
+    let numRows: Int
+    let numCols: Int
+    let title: String
     
-    var grid: [[String?]]
-    var gridnums: [[Int?]]
-    var numRows: Int
-    var numCols: Int
-    var title: String
-    
-    init?(id: String) {
-        let json: JSON
-        let group = DispatchGroup()
-        group.enter()
+    init(json: JSON) {
+
+            /*
+            acrossClues = [:]; downClues = [:]
+            acrossClueNums = []; downClueNums = []
+            author = ""; editor = ""; publisher = ""; copyright = ""; date = ""; dow = ""
+            grid = []; gridnums = []
+            numRows = 0; numCols = 0;
+            title = ""
+            return
+ */
         
-        guard let path = Bundle.main.path(forResource: "20", ofType: "json", inDirectory: "1976/01") else {
-            return nil
-        }
-        guard let data = NSData(contentsOfFile: path) else {
-            return nil
-        }
-        do {
-            json = try JSON(data: data as Data)
-            group.leave()
-        } catch {
-            return nil
-        }
-        group.wait()
         
         self.author = json["author"].stringValue
         self.editor = json["editor"].stringValue

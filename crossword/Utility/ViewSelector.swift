@@ -11,11 +11,14 @@ import SwiftUI
 
 enum ViewSelector {
     case home
+    case login
     
     static func getView(_ view: ViewSelector) -> AnyView {
         switch view {
         case .home:
             return AnyView(HomeView(vm: HomeVM()))
+        case .login:
+            return AnyView(LoginView(vm: LoginVM()))
         }
         
     }

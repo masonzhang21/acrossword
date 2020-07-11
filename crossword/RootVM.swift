@@ -21,17 +21,20 @@ class RootVM {
                     uid: user.uid,
                     email: user.email
                 )
+                appData.changeView(view: ViewSelector.getView(.home))
+                
             } else {
                 appData.user = nil
+                appData.changeView(view: ViewSelector.getView(.login))
             }
         }
     }
+    
     func removeAuthStateChangeListener(appData: AppData) {
         if (handle != nil) {
             Auth.auth().removeStateDidChangeListener(handle!)
             appData.user = nil
         }
-        
     }
 
 }

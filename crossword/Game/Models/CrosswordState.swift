@@ -21,8 +21,50 @@ enum Font {
     case normal
 }
 
+extension Font: Codable {
+    enum Key: CodingKey {
+        case rawValue
+    }
+    
+    enum CodingError: Error {
+        case unknownValue
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: Key.self)
+        let rawValue = try container.decode(Int.self, forKey: .rawValue)
+        switch rawValue {
+        case 0:
+            self = .correct
+        case 1:
+            self = .incorrect
+        case 2:
+            self = .pencil
+        case 3:
+            self = .normal
+        default:
+            throw CodingError.unknownValue
+        }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: Key.self)
+        switch self {
+        case .correct:
+            try container.encode(0, forKey: .rawValue)
+        case .incorrect:
+            try container.encode(1, forKey: .rawValue)
+        case .pencil:
+            try container.encode(2, forKey: .rawValue)
+        case .normal:
+            try container.encode(3, forKey: .rawValue)
+
+        }
+    }
+}
+
 //TO-DO: horrible name. GuessAndConfidence? Something?
-struct Guess: Equatable {
+struct Guess: Equatable, Codable {
     var text: String = ""
     var color: Font = .normal
 }
@@ -47,22 +89,23 @@ class CrosswordState {
     var multiplayerFocusedTiles: [TileLoc]?
     var pencilMode: Bool = false
     var direction: Direction = .across
-    //only change one at a time (no replacing rows/entire 2d array)
     var input: [[Guess?]] {
         didSet {
-            var loc: TileLoc?
+            var changes: [TileLoc] = []
+            //computationally inefficient...replace with method that takes in (TileLoc, Guess)? profile...
             for row in 0..<input.count {
                 for col in 0..<input[row].count {
                     if input[row][col] != oldValue[row][col] {
-                        loc = TileLoc(row: row, col: col)
+                        changes.append(TileLoc(row: row, col: col))
                     }
                 }
             }
-            if let loc = loc {
-                let tile = tileBindings[loc.row][loc.col]!
-                tile.text = input[loc.row][loc.col]!.text
-                tile.font = input[loc.row][loc.col]!.color
+            for changed in changes {
+                let tile = tileBindings[changed.row][changed.col]!
+                tile.text = input[changed.row][changed.col]!.text
+                tile.font = input[changed.row][changed.col]!.color
             }
+            lastEdit = Int(NSDate().timeIntervalSince1970)
         }
     }
     var focusedTile: TileLoc? {
@@ -105,12 +148,21 @@ class CrosswordState {
             clueTracker.updateClue(to: currentWord, direction: direction)
         }
     }
+    
+    var lastEdit: Int
 
     init(clueTracker: ClueTracker, initBindingsGrid: [[TileState?]], initInputGrid: [[Guess?]], initTile: TileLoc, initWord: [TileLoc]) {
+        self.clueTracker = clueTracker
         tileBindings = initBindingsGrid
+        input = initInputGrid
         currentTile = initTile
         currentWord = initWord
-        input = initInputGrid
-        self.clueTracker = clueTracker
+        lastEdit = Int(NSDate().timeIntervalSince1970)
+
+        defer {
+            input = initInputGrid
+            currentTile = initTile
+            currentWord = initWord
+        }
     }
 }
