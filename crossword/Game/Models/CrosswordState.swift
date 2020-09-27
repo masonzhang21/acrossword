@@ -8,102 +8,52 @@
 
 import Foundation
 import SwiftUI
-
+import SocketIO
 enum Direction {
     case across
     case down
 }
 
-enum Font {
-    case correct
-    case incorrect
-    case pencil
-    case normal
-}
-
-extension Font: Codable {
-    enum Key: CodingKey {
-        case rawValue
-    }
-    
-    enum CodingError: Error {
-        case unknownValue
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: Key.self)
-        let rawValue = try container.decode(Int.self, forKey: .rawValue)
-        switch rawValue {
-        case 0:
-            self = .correct
-        case 1:
-            self = .incorrect
-        case 2:
-            self = .pencil
-        case 3:
-            self = .normal
-        default:
-            throw CodingError.unknownValue
-        }
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: Key.self)
-        switch self {
-        case .correct:
-            try container.encode(0, forKey: .rawValue)
-        case .incorrect:
-            try container.encode(1, forKey: .rawValue)
-        case .pencil:
-            try container.encode(2, forKey: .rawValue)
-        case .normal:
-            try container.encode(3, forKey: .rawValue)
-
-        }
-    }
-}
-
-//TO-DO: horrible name. GuessAndConfidence? Something?
-struct Guess: Equatable, Codable {
-    var text: String = ""
-    var color: Font = .normal
-}
-
 class CrosswordState {
+    let solutionGrid: [[String?]]
+    var tileBindings: [[TileState?]]
+    var clueTracker: ClueTracker
+    var modes: ModesTracker
+    var direction: Direction = .across
+    var lastEdit: Int
+    var players: [String: Player] = [:]
+    
     var active: Bool = true {
-        didSet {
-            if active {
+        willSet {
+            if newValue {
                 focusedTile = currentTile
             } else {
                 focusedTile = nil
             }
         }
     }
-    //make a ClueMode wrapper for an OO and move clueMode logic there
-    //var boardSwitch:
-    var clueTracker: ClueTracker
-
-    var tileBindings: [[TileState?]]
-    
-    var isMultiplayer: Bool = false
-    var multiplayerFocusedTiles: [TileLoc]?
-    var pencilMode: Bool = false
-    var direction: Direction = .across
-    var input: [[Guess?]] {
+    var input: [[TileInput?]] {
         didSet {
             var changes: [TileLoc] = []
             //computationally inefficient...replace with method that takes in (TileLoc, Guess)? profile...
+            var isCorrectAndCompleted = true
             for row in 0..<input.count {
                 for col in 0..<input[row].count {
                     if input[row][col] != oldValue[row][col] {
                         changes.append(TileLoc(row: row, col: col))
+                    }
+                    if input[row][col]?.text != solutionGrid[row][col] {
+                        isCorrectAndCompleted = false
                     }
                 }
             }
             for changed in changes {
                 let tile = tileBindings[changed.row][changed.col]!
                 tile.text = input[changed.row][changed.col]!.text
-                tile.font = input[changed.row][changed.col]!.color
+                tile.font = input[changed.row][changed.col]!.font
+            }
+            if isCorrectAndCompleted {
+                modes.completedMode = true
             }
             lastEdit = Int(NSDate().timeIntervalSince1970)
         }
@@ -111,14 +61,15 @@ class CrosswordState {
     var focusedTile: TileLoc? {
         willSet {
             //removes focus from previously focused element (if the focused tile changed or if an element was previously focused)
-            if let prevLoc = focusedTile, newValue != focusedTile{
-                let previouslyFocusedTile = tileBindings[prevLoc.row][prevLoc.col]!
+            if let prevTile = focusedTile, newValue != prevTile {
+                let previouslyFocusedTile = tileBindings[prevTile.row][prevTile.col]!
                 previouslyFocusedTile.isFocused = false
             }
+            
             //focuses the focusedTile and sets currentTile equal to focusedTile
-            if let newLoc = newValue {
-                currentTile = newLoc
-                let tile = tileBindings[newLoc.row][newLoc.col]!
+            if let newTile = newValue {
+                currentTile = newTile
+                let tile = tileBindings[newTile.row][newTile.col]!
                 tile.isFocused = true
             }
         }
@@ -149,20 +100,69 @@ class CrosswordState {
         }
     }
     
-    var lastEdit: Int
-
-    init(clueTracker: ClueTracker, initBindingsGrid: [[TileState?]], initInputGrid: [[Guess?]], initTile: TileLoc, initWord: [TileLoc]) {
-        self.clueTracker = clueTracker
+    init(scheme: CrosswordScheme, initBindingsGrid: [[TileState?]], initInputGrid: [[TileInput?]], initTile: TileLoc, initWord: [TileLoc]) {
+        solutionGrid = scheme.grid
+        clueTracker = ClueTracker(scheme: scheme)
+        modes = ModesTracker()
         tileBindings = initBindingsGrid
         input = initInputGrid
         currentTile = initTile
         currentWord = initWord
         lastEdit = Int(NSDate().timeIntervalSince1970)
-
+        
         defer {
             input = initInputGrid
             currentTile = initTile
             currentWord = initWord
         }
     }
+}
+
+extension CrosswordState {
+    
+    func addPlayer(playerInfo: [String: Any]) {
+        let rawTile = playerInfo["tileLoc"] as! [String: Int]
+        let rawWord = playerInfo["wordLoc"] as! [[String: Int]]
+        let color: UIColor = UIColor(hexaRGBA: playerInfo["color"] as! String)!
+        let newPlayer = Player(username: playerInfo["playerID"] as! String, color: color, currentTile: TileLoc(location: rawTile), currentWord: rawWord.map {tile in TileLoc(location: tile)})
+        players[newPlayer.username] = newPlayer
+    }
+    func setActive(tile: TileLoc, for playerID: String) {
+        let prevTile = players[playerID]!.currentTile
+        if let playerToRemoveIndex = tileBindings[prevTile.row][prevTile.col]!.playersOnTile.firstIndex(where: {$0.username == playerID}) {
+            tileBindings[prevTile.row][prevTile.col]!.playersOnTile.remove(at: playerToRemoveIndex)
+        }
+        players[playerID]!.currentTile = tile
+        tileBindings[tile.row][tile.col]!.playersOnTile.append(players[playerID]!)
+    }
+    
+    func setActive(word: [TileLoc], for playerID: String) {
+        let prevWord = players[playerID]!.currentWord
+        
+        for tile in prevWord {
+            if let playerToRemoveIndex = tileBindings[tile.row][tile.col]!.playersOnWord.firstIndex(where: {$0.username == playerID}) {
+                tileBindings[tile.row][tile.col]!.playersOnWord.remove(at: playerToRemoveIndex)
+            }
+        }
+        players[playerID]!.currentWord = word
+
+        for tile in word {
+            tileBindings[tile.row][tile.col]!.playersOnWord.append(players[playerID]!)
+        }
+    }
+    
+    func removePlayer(playerID: String) {
+        let curTile = players[playerID]!.currentTile
+        let curWord = players[playerID]!.currentWord
+        if let playerToRemoveIndex = tileBindings[curTile.row][curTile.col]!.playersOnTile.firstIndex(where: {$0.username == playerID}) {
+            tileBindings[curTile.row][curTile.col]!.playersOnTile.remove(at: playerToRemoveIndex)
+        }
+        for tile in curWord {
+            if let playerToRemoveIndex = tileBindings[tile.row][tile.col]!.playersOnWord.firstIndex(where: {$0.username == playerID}) {
+                tileBindings[tile.row][tile.col]!.playersOnWord.remove(at: playerToRemoveIndex)
+            }
+        }
+        players.removeValue(forKey: playerID)
+    }
+    
 }

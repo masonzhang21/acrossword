@@ -15,4 +15,8 @@ class TileState: ObservableObject {
     @Published var isCurrentWord: Bool = false
     @Published var font: Font = .normal
     @Published var text: String = ""
+    
+    @Published var playersOnTile: [Player] = []
+    @Published var playersOnWord: [Player] = []
+
 }

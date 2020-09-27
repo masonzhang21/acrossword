@@ -23,6 +23,8 @@ target 'crossword' do
 	
   pod 'Validator'
   pod 'SwiftyJSON', '~> 4.0'
+  pod 'Socket.IO-Client-Swift', '~> 15.2.0'
+
 
 
 

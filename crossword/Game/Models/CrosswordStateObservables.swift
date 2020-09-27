@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 class ClueTracker: ObservableObject {
     @Published var clue: Clue
     var scheme: CrosswordScheme
@@ -26,3 +27,16 @@ class ClueTracker: ObservableObject {
         }
     }
 }
+
+class ModesTracker: ObservableObject {
+    @Published var clueMode: Bool = false
+    @Published var pencilMode: Bool = false
+    @Published var multiplayerMode: Bool = false
+    @Published var readyMode: Bool = false
+    @Published var syncMode: Bool = false
+    @Published var completedMode: Bool = false
+    
+}
+
+
+

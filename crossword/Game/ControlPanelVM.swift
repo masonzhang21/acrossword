@@ -13,19 +13,11 @@ import SwiftUI
 
 class ControlPanelVM: ObservableObject {
     var core: CrosswordCore
-    @Binding var clueMode: Bool {
-        didSet {
-            clueMode ? core.deactivateBoard() : core.activateBoard()
-        }
-    }
+    @ObservedObject var modes: ModesTracker
     @Binding var navbarHidden: Bool
     @Published var displayCheckDropdown: Bool = false {
-        didSet {
-            if displayCheckDropdown {
-                core.state.active = false
-            } else {
-                core.state.active = true
-            }
+        willSet {
+            
         }
     }
     @Published var displayRevealDropdown: Bool = false {
@@ -37,16 +29,11 @@ class ControlPanelVM: ObservableObject {
             }
         }
     }
-    //syncs with the pencilMode in state.
-    @Published var pencilMode: Bool = false {
-        didSet {
-            core.state.pencilMode = pencilMode
-        }
-    }
     
-    init(core: CrosswordCore, clueMode: Binding<Bool>, navbarHidden: Binding<Bool>) {
+    
+    init(core: CrosswordCore, navbarHidden: Binding<Bool>) {
         self.core = core
-        self._clueMode = clueMode
+        self.modes = core.state.modes
         self._navbarHidden = navbarHidden
     }
     
@@ -64,9 +51,9 @@ class ControlPanelVM: ObservableObject {
         let guess = core.state.input[curTile.row][curTile.col]!.text
         let solution = core.scheme.grid[curTile.row][curTile.col]
         if guess == solution {
-            core.state.input[curTile.row][curTile.col]!.color = .correct
+            core.updateInputConfidence(at: curTile, to: .correct)
         } else {
-            core.state.input[curTile.row][curTile.col]!.color = .incorrect
+            core.updateInputConfidence(at: curTile, to: .incorrect)
         }
     }
     
@@ -76,9 +63,9 @@ class ControlPanelVM: ObservableObject {
             let guess = core.state.input[tile.row][tile.col]!.text
             let solution = core.scheme.grid[tile.row][tile.col]
             if guess == solution {
-                core.state.input[tile.row][tile.col]!.color = .correct
+                core.updateInputConfidence(at: tile, to: .correct)
             } else {
-                core.state.input[tile.row][tile.col]!.color = .incorrect
+                core.updateInputConfidence(at: tile, to: .incorrect)
             }
         }
     }
@@ -91,10 +78,11 @@ class ControlPanelVM: ObservableObject {
                 }
                 let guess = input.text
                 let solution = core.scheme.grid[row][col]
+                let loc = TileLoc(row: row, col: col)
                 if guess == solution {
-                    core.state.input[row][col]!.color = .correct
+                    core.updateInputConfidence(at: loc, to: .correct)
                 } else {
-                    core.state.input[row][col]!.color = .incorrect
+                    core.updateInputConfidence(at: loc, to: .incorrect)
                 }
             }
         }
@@ -103,14 +91,14 @@ class ControlPanelVM: ObservableObject {
     func revealTile() {
         let curTile = core.state.currentTile
         let solution = core.scheme.grid[curTile.row][curTile.col]!
-        core.state.input[curTile.row][curTile.col] = Guess(text: solution, color: .correct)
+        core.updateInput(at: curTile, to: TileInput(text: solution, font: .correct))
     }
     
     func revealWord() {
         let curWord = core.state.currentWord
         for tile in curWord {
             let solution = core.scheme.grid[tile.row][tile.col]!
-            core.state.input[tile.row][tile.col] = Guess(text: solution, color: .correct)
+            core.updateInput(at: tile, to: TileInput(text: solution, font: .correct))
         }
     }
     
@@ -120,7 +108,8 @@ class ControlPanelVM: ObservableObject {
                 guard let solution = core.scheme.grid[row][col] else {
                     continue
                 }
-                core.state.input[row][col] = Guess(text: solution, color: .correct)
+                let loc = TileLoc(row: row, col: col)
+                core.updateInput(at: loc, to: TileInput(text: solution, font: .correct))
             }
         }
     }

@@ -41,8 +41,8 @@ class BoardActions {
                 let clueTiles = core.tilesInSameWord(as: clue.firstTile, dir: .across)
                 for tile in clueTiles {
                     if state.input[tile.row][tile.col]!.text == "" {
-                        state.focusedTile = tile
-                        state.currentWord = clueTiles
+                        core.updateFocusedTile(to: tile)
+                        core.updateCurrentWord(to: clueTiles)
                         return true
                     }
                 }
@@ -63,8 +63,8 @@ class BoardActions {
                 let clueTiles = core.tilesInSameWord(as: clue.firstTile, dir: .down)
                 for tile in clueTiles {
                     if state.input[tile.row][tile.col]!.text == "" {
-                        state.focusedTile = tile
-                        state.currentWord = clueTiles
+                        core.updateFocusedTile(to: tile)
+                        core.updateCurrentWord(to: clueTiles)
                         return true
                     }
                 }
@@ -80,6 +80,7 @@ class BoardActions {
                 //none of the across clues after the current clue had an empty space, so we need to wrap around the board and change direction to down
                 state.direction = .down
                 if !nextEmptyDownClue(from: 0) {
+                    state.direction = .across
                     //TO-DO: all spaces have been filled in, check puzzle
                 }
             }
@@ -88,6 +89,7 @@ class BoardActions {
                 //none of the down clues after the current clue had an empty space, so we need to wrap around the board and change direction to across
                 state.direction = .across
                 if !nextEmptyAcrossClue(from: 0) {
+                    state.direction = .down
                     //TO-DO: all spaces have been filled in, check puzzle
                 }
             }
@@ -115,7 +117,7 @@ class BoardActions {
             let nextEmptyTileIndex: Int? = wordEntries[(focusedIndex + 1)...].firstIndex(of: "")
             //if an empty tile in the current word exists, focus it
             if let index = nextEmptyTileIndex {
-                state.focusedTile = word[index]
+                core.updateFocusedTile(to: word[index])
             } else {
                 nextWord()
             }
@@ -123,9 +125,9 @@ class BoardActions {
             //if we don't want to skip filled tiles, increment row/col by 1.
             switch state.direction {
             case .across:
-                state.focusedTile = TileLoc(row: focused.row, col: focused.col + 1)
+                core.updateFocusedTile(to: TileLoc(row: focused.row, col: focused.col + 1))
             case .down:
-                state.focusedTile = TileLoc(row: focused.row + 1, col: focused.col)
+                core.updateFocusedTile(to: TileLoc(row: focused.row + 1, col: focused.col))
             }
         }
     }
@@ -142,12 +144,13 @@ class BoardActions {
         } else {
             switch state.direction {
             case .across:
-                state.focusedTile = TileLoc(row: focused.row, col: focused.col - 1)
-                state.input[focused.row][focused.col - 1]!.text = ""
+                let leftOfFocused = TileLoc(row: focused.row, col: focused.col - 1)
+                core.updateFocusedTile(to: leftOfFocused)
+                core.updateInput(at: leftOfFocused, to: TileInput(text: "", font: .normal))
             case .down:
-                state.focusedTile = TileLoc(row: focused.row - 1, col: focused.col)
-                state.input[focused.row - 1][focused.col]!.text = ""
-                
+                let northOfFocused = TileLoc(row: focused.row - 1, col: focused.col)
+                core.updateFocusedTile(to: northOfFocused)
+                core.updateInput(at: northOfFocused, to: TileInput(text: "", font: .normal))
                 
             }
         }
@@ -165,31 +168,32 @@ class BoardActions {
             if curNum == 1 {
                 //focuses the TileLoc of the first letter of the last down clue (which also changes currentTile)
                 newNum = scheme.downClueNums.last!
-                state.focusedTile = core.gridnumLoc(of: newNum)
+                core.updateFocusedTile(to: core.gridnumLoc(of: newNum))
                 //changes the direction and updates the currentWord with the currentTile.
                 core.flipDirection()
             } else {
                 let index = scheme.acrossClueNums.firstIndex(of: curNum)! - 1
                 newNum = scheme.acrossClueNums[index]
-                state.currentWord = core.tilesInSameWord(as: core.gridnumLoc(of: newNum)!
-                    , dir: .across)
+                core.updateCurrentWord(to: core.tilesInSameWord(as: core.gridnumLoc(of: newNum)!, dir: .across))
             }
-            state.focusedTile = state.currentWord.last
-            state.input[state.focusedTile!.row][state.focusedTile!.col]!.text = ""
+            core.updateFocusedTile(to: state.currentWord.last)
+            core.updateInput(at: state.focusedTile!, to: TileInput(text: "", font: .normal))
+
         case .down:
             if curNum == 1 {
                 //focuses the TileLoc of the first letter of the last across clue (which also changes currentTile)
                 newNum = scheme.acrossClueNums.last!
-                state.focusedTile = core.gridnumLoc(of: newNum)
+                core.updateFocusedTile(to: core.gridnumLoc(of: newNum))
                 //changes the direction and updates the currentWord with the currentTile.
                 core.flipDirection()
             } else {
                 let index = scheme.downClueNums.firstIndex(of: curNum)! - 1
                 newNum = scheme.downClueNums[index]
-                state.currentWord = core.tilesInSameWord(as: core.gridnumLoc(of: newNum)!, dir: .down)
+                core.updateCurrentWord(to: core.tilesInSameWord(as: core.gridnumLoc(of: newNum)!, dir: .down))
             }
-            state.focusedTile = state.currentWord.last
-            state.input[state.focusedTile!.row][state.focusedTile!.col]!.text = ""
+            core.updateFocusedTile(to: state.currentWord.last)
+            core.updateInput(at: state.focusedTile!, to: TileInput(text: "", font: .normal))
+
         }
         
     }

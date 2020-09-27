@@ -40,25 +40,20 @@ struct CrosswordTile: UIViewRepresentable {
         
         //SwiftUI view
         let cluePanel = UIHostingController(rootView: CluePanel(actions: actions, core: core, clueTracker: core.state.clueTracker)).view!
-        cluePanel.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 60)
+        cluePanel.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 30)
         textField.inputAccessoryView = cluePanel
         
         //labelContainer used to get some top padding
-        let labelContainer = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 12))
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 11))
+        let label = MarginLabel()
         label.font = label.font.withSize(8)
         label.textAlignment = .left
-        labelContainer.addSubview(label)
-
-
         if let tileNum = core.scheme.gridnums[loc.row][loc.col] {
-            //hacky way of getting some left padding
-            label.text = " " + String(tileNum)
+            label.text = String(tileNum)
         } else {
             label.text = ""
         }
         
-        let containerView = UIStackView(arrangedSubviews: [labelContainer, textField])
+        let containerView = UIStackView(arrangedSubviews: [label, textField])
 
         containerView.axis = .vertical
         containerView.distribution = .fillProportionally
@@ -90,7 +85,11 @@ struct CrosswordTile: UIViewRepresentable {
               background.backgroundColor = Constants.Colors.currentTile
           } else if tile.isCurrentWord {
               background.backgroundColor = Constants.Colors.currentWord
-          } else {
+          } else if tile.playersOnTile.count != 0 {
+            background.backgroundColor = tile.playersOnTile.last!.color
+          } else if tile.playersOnWord.count != 0 {
+            background.backgroundColor = tile.playersOnWord.last!.color
+        } else {
               background.backgroundColor = Constants.Colors.defaultTile
           }
           
@@ -107,6 +106,12 @@ struct CrosswordTile: UIViewRepresentable {
       }
     }
     
+    class MarginLabel: UILabel {
+        override func drawText(in rect: CGRect) {
+            let insets = UIEdgeInsets(top: 2, left: 2, bottom: 0, right: 0)
+            super.drawText(in: rect.inset(by: insets))
+        }
+    }
     
     class XWordTextField: UITextField {
         override func deleteBackward() {
@@ -136,8 +141,8 @@ struct CrosswordTile: UIViewRepresentable {
         
         
         @objc func onTap(_ gesture: UIGestureRecognizer) {
-            if !parent.core.state.active {
-                parent.core.activateBoard()
+            if !parent.core.state.active && parent.core.state.modes.clueMode {
+                parent.core.toggleClueMode()
             } else if parent.tile.isFocused {
                 parent.core.flipDirection()
             } else {
@@ -153,23 +158,21 @@ struct CrosswordTile: UIViewRepresentable {
         
         func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
             let crosswordState = parent.core.state
-            
+            let curTile = crosswordState.currentTile
+
             if string.count == 0 {
                 //delete button pressed on nonempty tile
-                let curTile = crosswordState.currentTile
-                crosswordState.input[curTile.row][curTile.col]!.text = ""
+                parent.core.updateInput(at: curTile, to: TileInput(text: "", font: .normal))
             } else if string.count == 1 {
                 //character entered
                 let wasEmpty: Bool = textField.text!.count == 0
                 if false {
                     //TO-DO: Implement rebus
                 } else {
-                    let curTile = crosswordState.currentTile
-                    crosswordState.input[curTile.row][curTile.col]!.text = string.uppercased()
-                    if crosswordState.pencilMode {
-                        crosswordState.input[curTile.row][curTile.col]!.color = .pencil
+                    if crosswordState.modes.pencilMode {
+                        parent.core.updateInput(at: curTile, to: TileInput(text: string.uppercased(), font: .pencil))
                     } else {
-                        crosswordState.input[curTile.row][curTile.col]!.color = .normal
+                        parent.core.updateInput(at: curTile, to: TileInput(text: string.uppercased(), font: .normal))
                     }
                     parent.actions.nextTile(wasEmpty: wasEmpty)
                 }
@@ -178,5 +181,4 @@ struct CrosswordTile: UIViewRepresentable {
         }
     }
 }
-
 

@@ -26,7 +26,7 @@ class CrosswordBuilder {
 //    }
     
     static func buildCrosswordState(from stored: StoredCrossword) -> CrosswordState {
-        var inputGrid: [[Guess?]] = Array(repeating: [], count: stored.input.count)
+        var inputGrid: [[TileInput?]] = Array(repeating: [], count: stored.input.count)
         for (index, row) in stored.input {
             inputGrid[index] = row
         }
@@ -36,15 +36,14 @@ class CrosswordBuilder {
     }
     
     static func newCrosswordState(from scheme: CrosswordScheme) -> CrosswordState {
-        let clueTracker = ClueTracker(scheme: scheme)
-        let emptyInputRow: [Guess?] = Array(repeating: nil, count: scheme.numCols)
-        var emptyInputGrid: [[Guess?]] = Array(repeating: emptyInputRow, count: scheme.numRows)
+        let emptyInputRow: [TileInput?] = Array(repeating: nil, count: scheme.numCols)
+        var emptyInputGrid: [[TileInput?]] = Array(repeating: emptyInputRow, count: scheme.numRows)
         let emptyBindingsRow: [TileState?] = Array(repeating: nil, count: scheme.numCols)
         var emptyBindingsGrid: [[TileState?]] = Array(repeating: emptyBindingsRow, count: scheme.numRows)
         for i in 0..<scheme.numRows {
             for j in 0..<scheme.numCols {
                 if scheme.grid[i][j] != nil {
-                    emptyInputGrid[i][j] = Guess()
+                    emptyInputGrid[i][j] = TileInput(text: "", font: .normal)
                     emptyBindingsGrid[i][j] = TileState()
                 }
             }
@@ -67,7 +66,7 @@ class CrosswordBuilder {
                 initWord.append(TileLoc(row: initTile.row, col: i))
             }
         }
-        return CrosswordState(clueTracker: clueTracker,
+        return CrosswordState(scheme: scheme,
                                    initBindingsGrid: emptyBindingsGrid,
                                    initInputGrid: emptyInputGrid,
                                    initTile: initTile,

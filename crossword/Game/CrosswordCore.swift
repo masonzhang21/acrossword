@@ -11,19 +11,29 @@ import Combine
 import SwiftUI
 
 class CrosswordCore {
+    var id: CrosswordID
     var state: CrosswordState
     var scheme: CrosswordScheme
-    var id: CrosswordID
-    init(id: CrosswordID, user: User, loadingFlag: Binding<Bool>) {
+    var server: SocketBridge?
+    
+    init(id: CrosswordID, user: User) {
         self.id = id
         scheme = CrosswordBuilder.buildCrosswordScheme(for: id)
         state = CrosswordBuilder.newCrosswordState(from: scheme)
         CrosswordIO.retrieveCrosswordState(user: user, id: id) { stored in
-            guard let stored = stored else {
+            guard var stored = stored else {
                 return
             }
-            let storedState = CrosswordBuilder.buildCrosswordState(from: stored)
-            self.state.input = storedState.input
+            //fake MP tag
+            //stored.multiplayerID = "masonzhang21-nyt-11-01-1933"
+            if let multiplayerID = stored.multiplayerID {
+                self.server = SocketBridge(username: user.uid, multiplayerID: multiplayerID, state: self.state)
+            } else {
+                //Singleplayer game
+                let storedState = CrosswordBuilder.buildCrosswordState(from: stored)
+                self.state.input = storedState.input
+                self.state.modes.readyMode = true
+            }
         }
     }
     /**
@@ -106,14 +116,23 @@ class CrosswordCore {
         return nil
     }
     
-    
-    func deactivateBoard() {
-        state.focusedTile = nil
-        state.active = false
+    func toggleClueMode() {
+        state.modes.clueMode.toggle()
+        if state.modes.clueMode {
+            state.active = false
+        } else {
+            state.active = true
+        }
     }
     
+    
+    func deactivateBoard() {
+        updateFocusedTile(to: state.currentTile)
+        state.active = false
+        }
+    
     func activateBoard() {
-        state.focusedTile = state.currentTile
+        updateFocusedTile(to: nil)
         state.active = true
     }
     
@@ -127,14 +146,7 @@ class CrosswordCore {
         case .down:
             state.direction = .across
         }
-        state.currentWord = tilesInSameWord(as: state.currentTile, dir: state.direction)
-    }
-    
-    /**
-     Unfocuses all tiles and drops keyboard
-     */
-    func clearFocus() {
-        
+        updateCurrentWord(to: tilesInSameWord(as: state.currentTile, dir: state.direction))
     }
     
     /**
@@ -144,7 +156,47 @@ class CrosswordCore {
      - loc: The tile to focus
      */
     func focus(tile: TileLoc) {
-        state.focusedTile = tile
-        state.currentWord = tilesInSameWord(as: tile, dir: state.direction)
+        updateFocusedTile(to: tile)
+        updateCurrentWord(to: tilesInSameWord(as: tile, dir: state.direction))
+    }
+    
+    func updateFocusedTile(to newTile: TileLoc?) {
+        if newTile != nil && state.modes.multiplayerMode {
+            server!.updateFocusedTile(to: newTile!)
+        } else {
+            state.focusedTile = newTile
+        }
+    }
+    
+    //----- MULTIPLAYER FUNCTIONS -----
+    func updateInput(at loc: TileLoc, to newGuess: TileInput) {
+        if state.modes.multiplayerMode {
+            server!.updateInput(at: loc, to: newGuess)
+        } else {
+            state.input[loc.row][loc.col] = newGuess
+        }
+    }
+    func updateInputConfidence(at loc: TileLoc, to newConfidence: Font) {
+        let inputText = state.input[loc.row][loc.col]!.text
+        let newGuess = TileInput(text: inputText, font: newConfidence)
+        if state.modes.multiplayerMode {
+            server!.updateInput(at: loc, to: newGuess)
+        } else {
+            state.input[loc.row][loc.col] = newGuess
+        }
+    }
+    func updateCurrentTile(to tile: TileLoc) {
+        if state.modes.multiplayerMode {
+            server!.updateCurrentTile(to: tile)
+        } else {
+            state.currentTile = tile
+        }
+    }
+    func updateCurrentWord(to word: [TileLoc]) {
+        if state.modes.multiplayerMode {
+            server!.updateCurrentWord(to: word)
+        } else {
+            state.currentWord = word
+        }
     }
 }

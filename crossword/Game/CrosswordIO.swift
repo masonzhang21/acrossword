@@ -33,7 +33,7 @@ class CrosswordIO {
     
     static func storeCrosswordState(user: User, state: CrosswordState, id: CrosswordID) {
         //only write if current 'last edited' > stored 'last edited' (given that stored 'last edited' exists
-        var input: [Int : [Guess?]] = [:]
+        var input: [Int : [TileInput?]] = [:]
         for (index, row) in state.input.enumerated() {
             input[index] = row
         }
@@ -48,12 +48,6 @@ class CrosswordIO {
     }
     
     static func retrieveCrosswordState(user: User, id: CrosswordID, onComplete: @escaping (StoredCrossword?) -> Void) {
-        let group = DispatchGroup()
-        group.enter()
-        print(Thread.current)
-        let queue = DispatchQueue.global(qos: .utility)
-        queue.async {
-            print(Thread.current)
         Firestore.firestore().collection("users").document(user.uid)
         .collection("crosswords").document(id.idString).getDocument { (document, error) in
             // Construct a Result type to encapsulate deserialization errors or
@@ -79,12 +73,6 @@ class CrosswordIO {
                 // A `StoredCrossword` value could not be initialized from the DocumentSnapshot.
                 print("Error decoding StoredCrossword: \(error)")
             }
-            print(Thread.current)
-            
         }
-            group.leave()
-
-        }
-        
-        }
+    }
 }

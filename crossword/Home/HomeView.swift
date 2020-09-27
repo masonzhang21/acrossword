@@ -11,7 +11,9 @@ import SwiftUI
 struct HomeView: View {
     @ObservedObject var vm: HomeVM
     @EnvironmentObject var appData: AppData
-    var id: CrosswordID = CrosswordID(newspaper: "nyt", day: "10", month: "01", year: "1976")
+    var id1: CrosswordID = CrosswordID(newspaper: "nyt", day: "10", month: "01", year: "1976")
+    var id2: CrosswordID = CrosswordID(newspaper: "nyt", day: "11", month: "02", year: "1976")
+
     var body: some View {
         VStack{
             Button(action: {self.vm.signOut()})
@@ -24,12 +26,19 @@ struct HomeView: View {
             if (appData.user != nil) {
             Text(appData.user!.uid)
             }
-            Button(action: {self.appData.changeView(view: GameView(id: self.id, user: self.appData.user!))}) {
-                Text("Play!").padding()
+            Button(action: {self.appData.changeView(view: GameView(id: self.id1, user: self.appData.user!))}) {
+                Text("Crossword 1!").padding()
                 .frame(minWidth: 0, maxWidth: .infinity)
                 .foregroundColor(Color(UIColor.black))
                 .cornerRadius(10)
             }
+            Button(action: {self.appData.changeView(view: GameView(id: self.id2, user: self.appData.user!))}) {
+                Text("Crossword 2!").padding()
+                .frame(minWidth: 0, maxWidth: .infinity)
+                .foregroundColor(Color(UIColor.black))
+                .cornerRadius(10)
+            }
+
         }//.onAppear(perform: {self.appData.changeView(view: GameView(id: self.id))})
     }
 }

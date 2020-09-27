@@ -27,6 +27,9 @@ struct Constants {
         
         static let cluePanelArrows: Color = Color(red: 193/255, green: 135/255, blue: 255/255)
         static let cluePanel: Color = Color(red: 200/255, green: 150/255, blue: 255/255)
+        
+        static let controlButtonPrimary: Color = Color(red: 180/255, green: 80/255, blue: 255/255)
+        static let controlButtonActive: Color = Color(red: 180/255, green: 80/255, blue: 255/255)
     }
     
     

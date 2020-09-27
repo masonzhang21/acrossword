@@ -9,8 +9,9 @@
 import Foundation
 
 struct StoredCrossword: Codable {
-    var input: [Int: [Guess?]]
+    var input: [Int: [TileInput?]]
     var id: CrosswordID
     var timeSinceLastChange: Int
+    var multiplayerID: String?
     
 }
