@@ -13,7 +13,7 @@
 <p align="center">An iOS application for realtime collaborative crossword puzzles between friends.</p>
 
 <p align="center"><img src="./assets/fadingsite.jpg"  width=1000px/></p>
-<p align="center"> Get the app <a href="/">here</a> on the App Store! </p>
+<p align="center"> Development is ongoing! </p>
 
 ## Technologies
 - Swift
