@@ -12,7 +12,7 @@
 
 <p align="center">An iOS application for realtime collaborative crossword puzzles between friends.</p>
 
-<p align="center"><img src="./assets/two.png"  width=100px/></p>
+<p align="center"><img src="./assets/two.png"  width=300px/></p>
 <p align="center"> Development is ongoing! </p>
 
 ## Technologies
