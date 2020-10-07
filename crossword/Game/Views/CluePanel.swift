@@ -20,7 +20,7 @@ struct CluePanel: View {
             }.padding().background(Constants.Colors.cluePanelArrows)
             Spacer()
             Button(action: self.core.flipDirection) {
-                Text(clueTracker.clue.clue).frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                Text(clueTracker.clue.clue).frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading).foregroundColor(.black)
             }
             Spacer()
             Button(action: {self.actions.nextWord()}) {

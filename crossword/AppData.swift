@@ -16,6 +16,6 @@ class AppData: ObservableObject {
     func changeView<V: View>(view: V) {
         currentView = AnyView(view)
     }
-    
+
     
 }

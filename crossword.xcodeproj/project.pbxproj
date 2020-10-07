@@ -61,6 +61,7 @@
 		ADCE3EF024882020002849D3 /* BoardActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCE3EEF24882020002849D3 /* BoardActions.swift */; };
 		ADDD13A7246F4F1C003BC8E9 /* CrosswordTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDD13A6246F4F1C003BC8E9 /* CrosswordTile.swift */; };
 		ADDD13A92470EB6C003BC8E9 /* TileLoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDD13A82470EB6C003BC8E9 /* TileLoc.swift */; };
+		ADF160DF25202F00002DDA9F /* PlayersPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF160DE25202F00002DDA9F /* PlayersPanelView.swift */; };
 		ADF6DFE8244CC5E800A3B5E3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ADF6DFE7244CC5E800A3B5E3 /* GoogleService-Info.plist */; };
 		ADF6DFE9244CC5E800A3B5E3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ADF6DFE7244CC5E800A3B5E3 /* GoogleService-Info.plist */; };
 		ADF6DFEA244CC5E800A3B5E3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ADF6DFE7244CC5E800A3B5E3 /* GoogleService-Info.plist */; };
@@ -152,6 +153,7 @@
 		ADCE3EEF24882020002849D3 /* BoardActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardActions.swift; sourceTree = "<group>"; };
 		ADDD13A6246F4F1C003BC8E9 /* CrosswordTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordTile.swift; sourceTree = "<group>"; };
 		ADDD13A82470EB6C003BC8E9 /* TileLoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileLoc.swift; sourceTree = "<group>"; };
+		ADF160DE25202F00002DDA9F /* PlayersPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersPanelView.swift; sourceTree = "<group>"; };
 		ADF6DFE7244CC5E800A3B5E3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ADF8759F2478CA2E00F8FCBE /* singlePlayerLogicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = singlePlayerLogicTests.swift; sourceTree = "<group>"; };
 		ADF875A22478E02D00F8FCBE /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
@@ -304,6 +306,7 @@
 				AD577242247F0FD700973301 /* AddFriendView.swift */,
 				AD577240247F0FAC00973301 /* InfoView.swift */,
 				AD577244247F0FE700973301 /* SettingsView.swift */,
+				ADF160DE25202F00002DDA9F /* PlayersPanelView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -627,6 +630,7 @@
 			files = (
 				AD52D3E924AFC7600074524D /* CrosswordIO.swift in Sources */,
 				AD57723F247F0FA400973301 /* ClueView.swift in Sources */,
+				ADF160DF25202F00002DDA9F /* PlayersPanelView.swift in Sources */,
 				ADCE3EEC24861F37002849D3 /* TileState.swift in Sources */,
 				AD17F055244D425B00CA04FC /* LoginView.swift in Sources */,
 				AD642B0A25119335004AE3F4 /* Player.swift in Sources */,

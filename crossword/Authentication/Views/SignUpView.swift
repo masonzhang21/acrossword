@@ -53,7 +53,7 @@ struct SignUpView: View {
                     ActivityIndicator(isShowing: $vm.loading)
                 }.padding()
                     .frame(minWidth: 0, maxWidth: .infinity)
-                    .background(Constants.Colors.darkGrey)
+                    .background(Constants.Colors.selectedClue)
                     .foregroundColor(Color(UIColor.white))
                     .cornerRadius(10)
             }

@@ -10,15 +10,15 @@ import SwiftUI
 
 struct GameView: View {
     
-    
     var core: CrosswordCore
+    @ObservedObject var state: CrosswordState
     @ObservedObject var modes: ModesTracker
     @State var navbarHidden = true
     @EnvironmentObject var appData: AppData
     init(id: CrosswordID, user: User) {
         core = CrosswordCore(id: id, user: user)
+        state = core.state
         modes = core.state.modes
-        
     }
     
     func saveState() {
@@ -31,14 +31,23 @@ struct GameView: View {
         NavigationView {
             GeometryReader {geometry in
                 VStack(alignment: .leading) {
-                    ControlPanelView(vm: ControlPanelVM(core: self.core, navbarHidden: self.$navbarHidden)).padding([.top, .bottom])
+                    ControlPanelView(vm: ControlPanelVM(core: self.core, secondsElapsed: self.$state.secondsElapsed, navbarHidden: self.$navbarHidden))
                     if self.modes.multiplayerMode {
-                        
+                        PlayersPanelView(players: self.$state.players)
                     }
                     if self.modes.readyMode {
                         BoardView(core: self.core, size: geometry.size.width)
                     } else {
-                        Text("Loading...")
+                        if #available(iOS 14.0, *) {
+                            ProgressView()     .progressViewStyle(CircularProgressViewStyle(tint: Constants.Colors.controlButtonPrimary))
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .scaleEffect(4, anchor: .center)
+                                .foregroundColor(.black)
+                                .font(.caption)
+                        } else {
+                            Text("Loading...")
+
+                        }
                     }
                     if self.modes.clueMode {
                         ClueView(core: self.core)
@@ -53,7 +62,7 @@ struct GameView: View {
 
 struct CrosswordView_Previews: PreviewProvider {
     static var previews: some View {
-        GameView(id: CrosswordID(newspaper: "nyt", day: "10", month: "01", year: "1976"), user: User(uid: "whatever", email: "whaterver@gmail.com"))
+        GameView(id: CrosswordID(newspaper: "nyt", day: "10", month: "01", year: "1976"), user: User(uid: "whatever", email: "whaterver1@gmail.com"))
     }
 }
 

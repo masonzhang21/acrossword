@@ -37,7 +37,20 @@ class CrosswordIO {
         for (index, row) in state.input.enumerated() {
             input[index] = row
         }
-        let storableState = StoredCrossword(input: input, id: id, timeSinceLastChange: state.lastEdit)
+        var numFilled: Int = 0
+        var numSquares: Int = 0
+        for row in state.input {
+            for tile in row {
+                if let tile = tile {
+                    if tile.text != "" {
+                        numFilled+=1
+                    }
+                    numSquares+=1
+                }
+            }
+        }
+        let percentCompleted: Int = Int(Double(numFilled) / Double(numSquares) * 100)
+        let storableState = StoredCrossword(input: input, id: id, timeSinceLastChange: state.lastEdit, percentCompleted: percentCompleted, secondsElapsed: state.secondsElapsed)
         var err : String
         do {
             try Firestore.firestore().collection("users").document(user.uid)

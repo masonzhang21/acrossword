@@ -6,6 +6,10 @@
 //  Copyright © 2020 mason. All rights reserved.
 //
 
+/*
+ 1) check for percentCompleted = 100 on load
+ 2) update timer
+ */
 import Foundation
 import SocketIO
 import SwiftyJSON
@@ -42,7 +46,7 @@ class SocketBridge {
     func addHandlers(username: String, multiplayerID: String) {
         socket.on(clientEvent: .connect) {[weak self] _, _ in
             let initializeInformation: [String: SocketData] = ["playerID": username, "gameID": multiplayerID, "curTile": self!.state.currentTile.socketRepresentation(),
-                                                               "curWord": self!.serialize1DArray(arr: self!.state.currentWord), "curInput": self!.serialize2DArray(arr: self!.state.input) ]
+                                                               "curWord": self!.serialize1DArray(arr: self!.state.currentWord), "curInput": self!.serialize2DArray(arr: self!.state.input), "secondsElapsed": self!.state.secondsElapsed ]
             self!.socket.emit("join", initializeInformation)
         }
         
@@ -56,6 +60,7 @@ class SocketBridge {
                 }
             }
             self!.state.input = initialInput
+            self!.state.secondsElapsed = game["secondsElapsed"] as! Int
             //set up player objects for other players in the game
             let players = game["connectedPlayers"] as! [String: [String: Any]]
             for (playerID, player) in players {
@@ -63,8 +68,8 @@ class SocketBridge {
                     continue
                 }
                 self!.state.addPlayer(playerInfo: player)
-                
             }
+            self!.state.modes.syncMode = game["syncMode"] as! Bool
             self!.state.modes.readyMode = true
             self!.state.modes.multiplayerMode = true
         }
@@ -117,9 +122,6 @@ class SocketBridge {
                 //update the origin player's word
                 self!.state.setActive(word: newWord, for: playerID)
             }
-            print(locs)
-            //let tileInput: TileInput =  TileInput(serializedTileInput: data[1] as! [String: Any])
-            //self!.state.input[loc.row][loc.col] = tileInput
         }
         socket.on("syncS2C") {[weak self] data, ack in
             let isSynced = data[0] as! Bool

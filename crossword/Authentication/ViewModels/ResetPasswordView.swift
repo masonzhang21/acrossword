@@ -31,7 +31,7 @@ struct ResetPasswordView: View {
                 Text("Send Link")
             }.padding()
                 .frame(minWidth: 0, maxWidth: .infinity)
-                .background(Constants.Colors.darkGrey)
+                .background(Constants.Colors.selectedClue)
                 .foregroundColor(Color(UIColor.white))
                 .cornerRadius(10)
             

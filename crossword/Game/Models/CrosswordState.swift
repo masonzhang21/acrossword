@@ -14,15 +14,15 @@ enum Direction {
     case down
 }
 
-class CrosswordState {
+class CrosswordState: ObservableObject {
     let solutionGrid: [[String?]]
     var tileBindings: [[TileState?]]
     var clueTracker: ClueTracker
     var modes: ModesTracker
     var direction: Direction = .across
     var lastEdit: Int
-    var players: [String: Player] = [:]
-    
+    @Published var players: [String: Player] = [:]
+    @Published var secondsElapsed: Int 
     var active: Bool = true {
         willSet {
             if newValue {
@@ -100,7 +100,7 @@ class CrosswordState {
         }
     }
     
-    init(scheme: CrosswordScheme, initBindingsGrid: [[TileState?]], initInputGrid: [[TileInput?]], initTile: TileLoc, initWord: [TileLoc]) {
+    init(scheme: CrosswordScheme, initBindingsGrid: [[TileState?]], initInputGrid: [[TileInput?]], initTile: TileLoc, initWord: [TileLoc], secondsElapsed: Int) {
         solutionGrid = scheme.grid
         clueTracker = ClueTracker(scheme: scheme)
         modes = ModesTracker()
@@ -109,6 +109,11 @@ class CrosswordState {
         currentTile = initTile
         currentWord = initWord
         lastEdit = Int(NSDate().timeIntervalSince1970)
+        self.secondsElapsed = secondsElapsed
+        
+        let _ = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            self.secondsElapsed+=1
+        }
         
         defer {
             input = initInputGrid
@@ -126,6 +131,9 @@ extension CrosswordState {
         let color: UIColor = UIColor(hexaRGBA: playerInfo["color"] as! String)!
         let newPlayer = Player(username: playerInfo["playerID"] as! String, color: color, currentTile: TileLoc(location: rawTile), currentWord: rawWord.map {tile in TileLoc(location: tile)})
         players[newPlayer.username] = newPlayer
+        setActive(tile: newPlayer.currentTile, for: newPlayer.username)
+        setActive(word: newPlayer.currentWord, for: newPlayer.username)
+
     }
     func setActive(tile: TileLoc, for playerID: String) {
         let prevTile = players[playerID]!.currentTile

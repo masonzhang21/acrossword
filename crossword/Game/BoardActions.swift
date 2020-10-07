@@ -163,38 +163,36 @@ class BoardActions {
     @objc func prevWord() {
         let curNum: Int = state.clueTracker.clue.num
         let newNum: Int
+        let prevWord: [TileLoc]
+        //figures out which word to focus
         switch state.direction {
         case .across:
             if curNum == 1 {
-                //focuses the TileLoc of the first letter of the last down clue (which also changes currentTile)
+                //focus last down word
                 newNum = scheme.downClueNums.last!
-                core.updateFocusedTile(to: core.gridnumLoc(of: newNum))
-                //changes the direction and updates the currentWord with the currentTile.
-                core.flipDirection()
+                state.direction = .down
+                prevWord = core.tilesInSameWord(as: core.gridnumLoc(of: newNum)!, dir: .down)
             } else {
+                //focus previous across word
                 let index = scheme.acrossClueNums.firstIndex(of: curNum)! - 1
                 newNum = scheme.acrossClueNums[index]
-                core.updateCurrentWord(to: core.tilesInSameWord(as: core.gridnumLoc(of: newNum)!, dir: .across))
+                prevWord = core.tilesInSameWord(as: core.gridnumLoc(of: newNum)!, dir: .across)
             }
-            core.updateFocusedTile(to: state.currentWord.last)
-            core.updateInput(at: state.focusedTile!, to: TileInput(text: "", font: .normal))
-
         case .down:
             if curNum == 1 {
-                //focuses the TileLoc of the first letter of the last across clue (which also changes currentTile)
                 newNum = scheme.acrossClueNums.last!
-                core.updateFocusedTile(to: core.gridnumLoc(of: newNum))
-                //changes the direction and updates the currentWord with the currentTile.
-                core.flipDirection()
+                state.direction = .across
+                prevWord = core.tilesInSameWord(as: core.gridnumLoc(of: newNum)!, dir: .across)
             } else {
                 let index = scheme.downClueNums.firstIndex(of: curNum)! - 1
                 newNum = scheme.downClueNums[index]
-                core.updateCurrentWord(to: core.tilesInSameWord(as: core.gridnumLoc(of: newNum)!, dir: .down))
+                prevWord = core.tilesInSameWord(as: core.gridnumLoc(of: newNum)!, dir: .down
+                )
             }
-            core.updateFocusedTile(to: state.currentWord.last)
-            core.updateInput(at: state.focusedTile!, to: TileInput(text: "", font: .normal))
-
         }
-        
+        core.updateCurrentWord(to: prevWord)
+        core.updateFocusedTile(to: prevWord.last!)
+        core.updateInput(at: prevWord.last!, to: TileInput(text: "", font: .normal))
+
     }
 }

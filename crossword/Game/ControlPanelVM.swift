@@ -14,10 +14,15 @@ import SwiftUI
 class ControlPanelVM: ObservableObject {
     var core: CrosswordCore
     @ObservedObject var modes: ModesTracker
+    @Binding var secondsElapsed: Int
     @Binding var navbarHidden: Bool
     @Published var displayCheckDropdown: Bool = false {
-        willSet {
-            
+        didSet {
+            if displayCheckDropdown {
+                core.state.active = false
+            } else {
+                core.state.active = true
+            }
         }
     }
     @Published var displayRevealDropdown: Bool = false {
@@ -31,10 +36,11 @@ class ControlPanelVM: ObservableObject {
     }
     
     
-    init(core: CrosswordCore, navbarHidden: Binding<Bool>) {
+    init(core: CrosswordCore, secondsElapsed: Binding<Int>, navbarHidden: Binding<Bool>) {
         self.core = core
         self.modes = core.state.modes
         self._navbarHidden = navbarHidden
+        self._secondsElapsed = secondsElapsed
     }
     
     func prepareForNavigation() {

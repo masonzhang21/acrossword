@@ -32,6 +32,7 @@ class CrosswordBuilder {
         }
         let state = newCrosswordState(from: buildCrosswordScheme(for: stored.id))
         state.input = inputGrid
+        state.secondsElapsed = stored.secondsElapsed
         return state
     }
     
@@ -70,7 +71,8 @@ class CrosswordBuilder {
                                    initBindingsGrid: emptyBindingsGrid,
                                    initInputGrid: emptyInputGrid,
                                    initTile: initTile,
-                                   initWord: initWord)
+                                   initWord: initWord,
+                                   secondsElapsed: 0)
     }
     
 }

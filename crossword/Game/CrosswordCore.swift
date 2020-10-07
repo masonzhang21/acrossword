@@ -5,11 +5,6 @@
 //  Created by Mason Zhang on 5/3/20.
 //  Copyright © 2020 mason. All rights reserved.
 //
-
-import Foundation
-import Combine
-import SwiftUI
-
 class CrosswordCore {
     var id: CrosswordID
     var state: CrosswordState
@@ -25,9 +20,11 @@ class CrosswordCore {
                 return
             }
             //fake MP tag
-            //stored.multiplayerID = "masonzhang21-nyt-11-01-1933"
+            stored.multiplayerID = "masonzhang21-nyt-11-01-1933"
+            print("%COMP", stored.percentCompleted, stored.secondsElapsed)
             if let multiplayerID = stored.multiplayerID {
                 self.server = SocketBridge(username: user.uid, multiplayerID: multiplayerID, state: self.state)
+                self.state.modes.multiplayerMode = true
             } else {
                 //Singleplayer game
                 let storedState = CrosswordBuilder.buildCrosswordState(from: stored)
@@ -162,7 +159,7 @@ class CrosswordCore {
     
     func updateFocusedTile(to newTile: TileLoc?) {
         if newTile != nil && state.modes.multiplayerMode {
-            server!.updateFocusedTile(to: newTile!)
+            server!.updateCurrentTile(to: newTile!)
         } else {
             state.focusedTile = newTile
         }
@@ -197,6 +194,14 @@ class CrosswordCore {
             server!.updateCurrentWord(to: word)
         } else {
             state.currentWord = word
+        }
+    }
+    func updateSyncMode(to isSynced: Bool) {
+        if state.modes.multiplayerMode {
+            server!.updateSync(to: isSynced)
+        } else {
+            //this should never execute
+            state.modes.syncMode = isSynced
         }
     }
 }
